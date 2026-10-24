@@ -1,8 +1,8 @@
-JUNIOR ACADEMIC QUIZBOOK END-USER LICENSE AGREEMENT (EULA)
+JAMBITES ACADEMIC QUIZBOOK END-USER LICENSE AGREEMENT (EULA)
 
 Copyright © 2026 ThankGod Okoduwa. All Rights Reserved.
 
-Permission is hereby granted to any person obtaining a copy of this software (the "Junior Academic Quizbook") to use, run, and share the live application for personal, non-commercial, and devotional purposes only, subject to the following conditions:
+Permission is hereby granted to any person obtaining a copy of this software (the "Jambites Academic Quizbook") to use, run, and share the live application for personal, non-commercial, and devotional purposes only, subject to the following conditions:
 
 No Source Code Redistribution or Modification: You may not inspect, copy, modify, merge, publish, distribute, sublicense, or sell copies of the underlying source code (HTML, CSS, JavaScript) without express written permission from the author.
 
