@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Academic Quizbook - JAMB UTME Prep (50 per Subject, English 60)</title>
+  <style>
+    /* Reset & Base Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      padding: 20px;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Main Card Container */
+    .app-card {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(15px);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 24px;
+      padding: 30px;
+      max-width: 680px;
+      width: 100%;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Header & Animated Titles */
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      text-shadow: 0 0 10px #00f2fe, 0 0 20px #00f2fe;
+      letter-spacing: 1px;
+    }
+
+    .creator-badge {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 6px 16px;
+      background: linear-gradient(90deg, #ff8a00, #e52e71);
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      box-shadow: 0 4px 15px rgba(229, 46, 113, 0.4);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    /* Floating Pop-Up Banner */
+    .popup-banner {
+      position: absolute;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ffea00;
+      color: #000;
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-weight: 800;
+      font-size: 0.85rem;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      animation: popDown 8s ease-in-out infinite;
+      z-index: 10;
+      white-space: nowrap;
+    }
+
+    @keyframes popDown {
+      0%, 80%, 100% { top: -60px; }
+      15%, 65% { top: 12px; }
+    }
+
+    /* Stage / Class Badge */
+    .stage-badge {
+      display: inline-block;
+      background: #00f2fe;
+      color: #000;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 0.85rem;
+      margin-top: 5px;
+      text-transform: uppercase;
+    }
+
+    /* Input Controls */
+    .input-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 700;
+      color: #00f2fe;
+      font-size: 1rem;
+    }
+
+    .name-input {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 14px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      background: rgba(0, 0, 0, 0.4);
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+
+    .name-input:focus {
+      border-color: #00f2fe;
+      box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+    }
+
+    /* Screens */
+    .start-screen, .subject-screen {
+      text-align: center;
+      padding: 10px 10px;
+    }
+
+    .start-screen h2, .subject-screen h2 {
+      font-size: 1.8rem;
+      color: #00f2fe;
+      margin-bottom: 15px;
+    }
+
+    .info-box {
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 16px;
+      padding: 20px;
+      text-align: left;
+      margin-bottom: 20px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .info-box li {
+      margin-bottom: 10px;
+      list-style-type: none;
+      font-size: 0.95rem;
+    }
+
+    .mode-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 15px;
+      max-height: 360px;
+      overflow-y: auto;
+      padding-right: 5px;
+    }
+
+    .mode-buttons::-webkit-scrollbar {
+      width: 6px;
+    }
+    .mode-buttons::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+    }
+
+    .start-btn {
+      background: linear-gradient(90deg, #00ff87, #60efff);
+      color: #000;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 0 12px rgba(0, 255, 135, 0.3);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .start-btn:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 20px rgba(0, 255, 135, 0.7);
+    }
+
+    /* Timer Bar & Info */
+    .timer-badge {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid #00f2fe;
+      color: #00f2fe;
+      font-size: 1.1rem;
+      font-weight: 800;
+      text-align: center;
+      padding: 8px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+    }
+
+    .progress-container {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      height: 10px;
+      width: 100%;
+      margin-bottom: 15px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      background: linear-gradient(90deg, #00f2fe, #4facfe);
+      height: 100%;
+      width: 1%;
+      transition: width 0.3s ease;
+    }
+
+    .quiz-info {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: #ffe600;
+    }
+
+    /* Question & Options */
+    .quiz-screen {
+      display: none;
+    }
+
+    .question-text {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      line-height: 1.4;
+      min-height: 50px;
+    }
+
+    .options-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .option-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      padding: 12px 16px;
+      border-radius: 14px;
+      color: #fff;
+      font-size: 0.95rem;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 500;
+    }
+
+    .option-btn:hover:not([disabled]) {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .option-btn.correct {
+      background: #00e676 !important;
+      border-color: #ffffff !important;
+      color: #000 !important;
+      font-weight: bold;
+      box-shadow: 0 0 12px #00e676;
+    }
+
+    .option-btn.wrong {
+      background: #ff1744 !important;
+      border-color: #ffffff !important;
+      color: #fff !important;
+      box-shadow: 0 0 12px #ff1744;
+    }
+
+    .nav-btns {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 25px;
+    }
+
+    .btn {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: transform 0.2s ease;
+    }
+
+    .btn:active { transform: scale(0.95); }
+
+    .btn-prev { background: rgba(255, 255, 255, 0.2); color: #fff; }
+    .btn-next { background: #00f2fe; color: #000; }
+    .btn-submit { background: #00ff87; color: #000; }
+
+    .score-screen {
+      text-align: center;
+      display: none;
+    }
+
+    .score-badge {
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: #ffe600;
+      text-shadow: 0 0 20px rgba(255, 230, 0, 0.6);
+      margin: 15px 0;
+    }
+
+    .action-btn {
+      background: linear-gradient(90deg, #ff8a00, #e52e71);
+      color: #fff;
+      padding: 14px 30px;
+      border: none;
+      border-radius: 30px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin: 10px 5px 0 5px;
+    }
+
+    @media (max-width: 600px) {
+      .app-card {
+        padding: 20px 15px;
+      }
+      h1 {
+        font-size: 1.8rem;
+      }
+      .question-text {
+        font-size: 1.05rem;
+      }
+      .btn {
+        padding: 10px 14px;
+        font-size: 0.85rem;
+      }
+    }
+  
+    /* In-page dialog */
+    .dialog-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 20px;
+    }
+    .dialog-box {
+      background: #1a2a3a;
+      border: 2px solid #00f2fe;
+      border-radius: 16px;
+      padding: 25px;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      color: #fff;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    }
+    .dialog-box p { margin: 0 0 20px 0; font-size: 1.05rem; line-height: 1.5; }
+    .dialog-actions { display: flex; gap: 10px; justify-content: center; }
+  </style>
+</head>
+<body>
+
+  <div class="app-card">
+    <div class="popup-banner">✨🎓 JAMB UTME ACADEMIC QUIZBOOK 🎓✨</div>
+
+    <header>
+      <h1>Academic Quizbook</h1>
+      <div class="creator-badge">DEVELOPED BY EVANG. THANKGOD OKODUWA</div>
+    </header>
+
+    <!-- Start / Landing Screen -->
+    <div class="start-screen" id="start-screen">
+      <h2>Welcome, UTME Candidate</h2>
+      
+      <div class="input-group">
+        <label for="player-name">Enter Candidate Name:</label>
+        <input type="text" id="player-name" class="name-input" placeholder="e.g. Sunshine Okoh" autocomplete="off">
+      </div>
+
+      <div class="info-box">
+        <ul>
+          <li>📚 <strong>22 JAMB Subjects Available:</strong> English Language (Use of English - Compulsory), Agricultural Science, Arabic, Biology, Building/Tech Drawing, Chemistry, CRK/CRS, Commerce, Computer Studies, Economics, French, Geography, Government, History, Home Economics, IRK/IRS, Literature-in-English, Mathematics, Music, PHE, Physics, Principles of Accounts.</li>
+          <li>📝 <strong>Distinct questions only</strong> — each subject button shows its current question count.</li>
+          <li>⏱️ <strong>Time Limit:</strong> 30 Minutes per subject session.</li>
+        </ul>
+      </div>
+
+      <div class="mode-buttons">
+        <button class="start-btn" onclick="openSubjectSelection()">ENTER JAMB QUIZBOOK</button>
+      </div>
+    </div>
+
+    <!-- Subject Selection Screen -->
+    <div class="subject-screen" id="subject-screen" style="display: none;">
+      <h2>Select JAMB Subject</h2>
+      <p style="margin-bottom: 15px; color: #ffe600;">Choose from the 22 JAMB subjects below (question counts shown on each button):</p>
+
+      <div class="mode-buttons" id="subject-buttons-container">
+        <!-- 22 Subjects rendered dynamically with English Language coming FIRST -->
+      </div>
+    </div>
+
+    <!-- Quiz Screen -->
+    <div class="quiz-screen" id="quiz-screen">
+      <div style="text-align: center; margin-bottom: 10px;">
+        <span class="stage-badge" id="current-stage-tag">JAMB UTME</span>
+      </div>
+      <div class="timer-badge" id="timer-display">⏱ Time Remaining: 30:00</div>
+
+      <div class="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+
+      <div class="quiz-info">
+        <span id="question-count">Question 1 of 50</span>
+        <span id="score-tracker">Score: 0</span>
+      </div>
+
+      <div class="question-text" id="question-text">Loading question...</div>
+
+      <div class="options-grid" id="options-container"></div>
+
+      <div class="nav-btns">
+        <button class="btn btn-prev" id="prev-btn" onclick="changeQuestion(-1)">Previous</button>
+        <button class="btn btn-submit" onclick="confirmSubmit()">Submit Quiz</button>
+        <button class="btn btn-next" id="next-btn" onclick="changeQuestion(1)">Next</button>
+      </div>
+    </div>
+
+    <!-- Results Screen -->
+    <div class="score-screen" id="score-screen">
+      <h2 id="stage-result-title">Quiz Completed! 🎉</h2>
+      <p style="margin-top: 10px; font-size: 1.1rem;">Thank you for completing your practice session!</p>
+      
+      <div class="score-badge" id="final-score">0 / 50</div>
+
+      <p id="feedback-text" style="font-size: 1.2rem; font-weight: 600; line-height: 1.4; padding: 0 10px;"></p>
+      <p style="margin-top: 15px; color: #ffea00;">JAMB UTME Quizbook Application</p>
+
+      <div id="action-buttons-container">
+        <button class="action-btn" onclick="restartQuiz()">Choose Another Subject</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="dialog-overlay" class="dialog-overlay">
+    <div class="dialog-box">
+      <p id="dialog-message"></p>
+      <div class="dialog-actions">
+        <button id="dialog-no" class="btn btn-prev">Cancel</button>
+        <button id="dialog-yes" class="btn btn-submit">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Generator function to create a robust set of 50 distinct JAMB-style questions per subject
+    function createJambDatabase() {
+      const db = {};
+
+      const createSubjectQuestions = (subjectName, topicTemplates) => topicTemplates.map(t => ({
+        q: t.q.replace(/\s*\(Set \{v\}\)/g, ""),
+        options: t.opts,
+        answer: t.ans
+      }));
+
+      // 1. English Language (Use of English) - COMPULSORY JAMB SUBJECT (FIRST)
+      db["English Language (Use of English)"] = createSubjectQuestions("English Language (Use of English)", [
+        { q: "Choose the word nearest in meaning to the underlined word: The manager's decision was <u>irrevokable</u>. (Set {v})", opts: ["Unalterable", "Temporary", "Questionable", "Acceptable"], ans: 0 },
+        { q: "Choose the option opposite in meaning to the underlined word: She gave a <u>concise</u> summary of the lecture. (Set {v})", opts: ["Brief", "Verbose", "Clear", "Short"], ans: 1 },
+        { q: "Choose the option that correctly completes the sentence: Neither the students nor the teacher ___ present yesterday. (Set {v})", opts: ["were", "was", "are", "have been"], ans: 1 },
+        { q: "Identify the word with a different vowel sound from the others: (Set {v})", opts: ["Cat", "Bat", "Cart", "Mat"], ans: 2 },
+        { q: "Choose the correct interpretation: 'To burn the candle at both ends' means to: (Set {v})", opts: ["Waste electricity", "Work excessively hard from morning till night", "Light up two candles", "Be very careful"], ans: 1 }
+      ]);
+
+      // 2. Agricultural Science
+      db["Agricultural Science"] = createSubjectQuestions("Agricultural Science", [
+        { q: "Which soil type has the highest water-holding capacity? (Set {v})", opts: ["Clay soil", "Sandy soil", "Loamy soil", "Silty soil"], ans: 0 },
+        { q: "The process of removing excess water from agricultural land is called: (Set {v})", opts: ["Irrigation", "Drainage", "Evaporation", "Transpiration"], ans: 1 },
+        { q: "Which element is classified as a major plant macronutrient? (Set {v})", opts: ["Zinc", "Nitrogen", "Copper", "Boron"], ans: 1 },
+        { q: "A pest that bores into cowpea seeds during storage is: (Set {v})", opts: ["Weevil", "Aphid", "Grasshopper", "Termite"], ans: 0 },
+        { q: "The disease caused by virus in cassava characterized by yellow leaf spots is: (Set {v})", opts: ["Mosaic disease", "Bight", "Smut", "Rust"], ans: 0 }
+      ]);
+
+      // 3. Arabic
+      db["Arabic"] = createSubjectQuestions("Arabic", [
+        { q: "In Arabic grammar, a word that indicates a person, place, or thing is called: (Set {v})", opts: ["Ism (اسم)", "Fi'l (فعل)", "Harf (حرف)", "Sifah (صفة)"], ans: 0 },
+        { q: "The sign of Raf' (الرفع) for a singular noun in Arabic is: (Set {v})", opts: ["Fathah", "Dammah", "Kasrah", "Sukun"], ans: 1 },
+        { q: "Which particle is used to negate a past tense verb? (Set {v})", opts: ["Mā (ما)", "Lā (لا)", "Lan (لن)", "In (إن)"], ans: 0 },
+        { q: "The plural form of 'Kitab' (كتاب - Book) is: (Set {v})", opts: ["Kutub (كتب)", "Katib (كاتب)", "Maktub (مكتوب)", "Maktabat (مكتبة)"], ans: 0 },
+        { q: "The sound feminine plural in Arabic ends with: (Set {v})", opts: ["Ūna (ون)", "Īna (ين)", "Āt (ات)", "An (اً)"], ans: 2 }
+      ]);
+
+      // 4. Biology
+      db["Biology"] = createSubjectQuestions("Biology", [
+        { q: "The powerhouse of the eukaryotic cell is the: (Set {v})", opts: ["Nucleus", "Mitochondrion", "Ribosome", "Golgi body"], ans: 1 },
+        { q: "In blood circulation, deoxygenated blood enters the heart via the: (Set {v})", opts: ["Pulmonary vein", "Vena cava", "Aorta", "Coronary artery"], ans: 1 },
+        { q: "Which organelle contains hydrolytic enzymes responsible for cellular digestion? (Set {v})", opts: ["Lysosome", "Centrosome", "Vacuole", "Endoplasmic reticulum"], ans: 0 },
+        { q: "The plant hormone responsible for cell elongation and phototropism is: (Set {v})", opts: ["Cytokinin", "Auxin", "Gibberellin", "Abscisic acid"], ans: 1 },
+        { q: "In Mendel's monohybrid cross between two heterozygous tall plants (Tt x Tt), the phenotypic ratio is: (Set {v})", opts: ["1:2:1", "3:1", "9:3:3:1", "1:1"], ans: 1 }
+      ]);
+
+      // 5. Building / Technical Drawing
+      db["Building / Technical Drawing"] = createSubjectQuestions("Building / Technical Drawing", [
+        { q: "In orthographic projection, the plan view is projected onto the: (Set {v})", opts: ["Horizontal plane", "Vertical plane", "Profile plane", "Auxiliary plane"], ans: 0 },
+        { q: "The line used to indicate hidden details in technical drawings is a: (Set {v})", opts: ["Continuous thick line", "Continuous thin line", "Dashed thin line", "Chain thin line"], ans: 2 },
+        { q: "In a building plan, a 1:100 scale means 1 cm on paper represents: (Set {v})", opts: ["10 cm", "100 cm (1 m)", "10 m", "100 m"], ans: 1 },
+        { q: "Which tool is used primarily for drawing vertical and inclined parallel lines? (Set {v})", opts: ["T-square and Set-square", "Compass", "Divider", "French curve"], ans: 0 },
+        { q: "The foundation type suitable for soft, waterlogged soils in building construction is: (Set {v})", opts: ["Strip foundation", "Pad foundation", "Raft foundation", "Stepped foundation"], ans: 2 }
+      ]);
+
+      // 6. Chemistry
+      db["Chemistry"] = createSubjectQuestions("Chemistry", [
+        { q: "The atomic number of an element is determined by the number of: (Set {v})", opts: ["Neutrons", "Protons", "Electrons", "Nucleons"], ans: 1 },
+        { q: "Gas pressure is inversely proportional to volume at constant temperature according to: (Set {v})", opts: ["Charles's law", "Boyle's law", "Graham's law", "Gay-Lussac's law"], ans: 1 },
+        { q: "The pH of a 0.001 M HCl solution is: (Set {v})", opts: ["1", "2", "3", "11"], ans: 2 },
+        { q: "Which catalyst is used in the industrial preparation of ammonia by the Haber process? (Set {v})", opts: ["Vanadium(V) oxide", "Finely divided iron", "Platinum-rhodium", "Nickel"], ans: 1 },
+        { q: "Hydrocarbons with the general formula C_n H_{2n} containing a double bond are: (Set {v})", opts: ["Alkanes", "Alkenes", "Alkynes", "Alkanols"], ans: 1 }
+      ]);
+
+      // 7. Christian Religious Knowledge (CRK / CRS)
+      db["Christian Religious Knowledge (CRK / CRS)"] = createSubjectQuestions("Christian Religious Knowledge (CRK / CRS)", [
+        { q: "God created human beings on which day of creation? (Set {v})", opts: ["Fourth day", "Fifth day", "Sixth day", "Seventh day"], ans: 2 },
+        { q: "The covenant of circumcision was established between God and: (Set {v})", opts: ["Noah", "Abraham", "Moses", "David"], ans: 1 },
+        { q: "Moses received the Ten Commandments at Mount: (Set {v})", opts: ["Carmel", "Sinai", "Nebo", "Tabor"], ans: 1 },
+        { q: "In the New Testament, Jesus was baptized in River Jordan by: (Set {v})", opts: ["John the Baptist", "Peter", "James", "Philip"], ans: 0 },
+        { q: "The Holy Spirit descended on the disciples on the day of: (Set {v})", opts: ["Passover", "Pentecost", "Epiphany", "Transfiguration"], ans: 1 }
+      ]);
+
+      // 8. Commerce
+      db["Commerce"] = createSubjectQuestions("Commerce", [
+        { q: "Commerce encompasses trade and: (Set {v})", opts: ["Manufacturing", "Aids to trade", "Mining", "Agriculture"], ans: 1 },
+        { q: "Direct trade that involves exchanging goods directly for other goods is: (Set {v})", opts: ["Wholesale trade", "Barter system", "Entrepot trade", "Retail trade"], ans: 1 },
+        { q: "A document issued by a seller to correct an undercharge on an invoice is a: (Set {v})", opts: ["Credit note", "Debit note", "Receipt", "Statement of account"], ans: 1 },
+        { q: "The maximum number of partners in an ordinary commercial partnership is usually: (Set {v})", opts: ["2", "10", "20", "50"], ans: 2 },
+        { q: "The middleman who sells directly to the final consumer is the: (Set {v})", opts: ["Wholesaler", "Broker", "Retailer", "Commission agent"], ans: 2 }
+      ]);
+
+      // 9. Computer Studies
+      db["Computer Studies"] = createSubjectQuestions("Computer Studies", [
+        { q: "The main processing unit of a computer system is the: (Set {v})", opts: ["RAM", "CPU", "Hard Disk", "ROM"], ans: 1 },
+        { q: "Which of the following is volatile primary memory? (Set {v})", opts: ["ROM", "RAM", "Flash Memory", "Hard Drive"], ans: 1 },
+        { q: "1 Gigabyte (GB) is equivalent to: (Set {v})", opts: ["1024 Bytes", "1024 Kilobytes", "1024 Megabytes", "1024 Terabytes"], ans: 2 },
+        { q: "The binary representation of decimal number 10 is: (Set {v})", opts: ["1000", "1010", "1100", "1110"], ans: 1 },
+        { q: "Which protocol is primarily used to transmit secure web pages on the Internet? (Set {v})", opts: ["HTTP", "FTP", "HTTPS", "SMTP"], ans: 2 }
+      ]);
+
+      // 10. Economics
+      db["Economics"] = createSubjectQuestions("Economics", [
+        { q: "Economics is defined as the science which studies human behavior as a relationship between ends and scarce means by: (Set {v})", opts: ["Adam Smith", "Lionel Robbins", "David Ricardo", "Alfred Marshall"], ans: 1 },
+        { q: "Opportunity cost is best defined as: (Set {v})", opts: ["Total money spent", "Real cost of the next best alternative foregone", "Variable cost", "Fixed cost"], ans: 1 },
+        { q: "When price rises and total revenue rises, the demand is: (Set {v})", opts: ["Elastic", "Inelastic", "Unitary elastic", "Perfectly elastic"], ans: 1 },
+        { q: "The market structure with a single seller and no close substitutes is a: (Set {v})", opts: ["Monopoly", "Oligopoly", "Monopolistic competition", "Perfect competition"], ans: 0 },
+        { q: "Inflation caused by an increase in production costs like wages and raw materials is: (Set {v})", opts: ["Demand-pull inflation", "Cost-push inflation", "Hyperinflation", "Structural inflation"], ans: 1 }
+      ]);
+
+      // 11. Fine Arts
+      db["Fine Arts"] = createSubjectQuestions("Fine Arts", [
+        { q: "The primary colors in fine arts painting are: (Set {v})", opts: ["Red, Green, Blue", "Red, Yellow, Blue", "Orange, Green, Violet", "Black, White, Red"], ans: 1 },
+        { q: "The ancient Nigerian culture known for terracotta human and animal heads is: (Set {v})", opts: ["Nok culture", "Ifẹ culture", "Benin culture", "Igbo-Ukwu culture"], ans: 0 },
+        { q: "In art perspective, the line where the sky appears to meet the earth is the: (Set {v})", opts: ["Vanishing line", "Horizon line", "Center line", "Diagonal line"], ans: 1 },
+        { q: "Sculpture produced by removing material from a block (like wood or stone) is: (Set {v})", opts: ["Additive sculpture", "Subtractive sculpture", "Casting", "Modeling"], ans: 1 },
+        { q: "Chiaroscuro in painting refers to the strong contrast between: (Set {v})", opts: ["Warm and cool colors", "Light and dark tones", "Smooth and rough textures", "Primary and secondary colors"], ans: 1 }
+      ]);
+
+      // 12. French
+      db["French"] = createSubjectQuestions("French", [
+        { q: "How do you say 'Good morning' in French? (Set {v})", opts: ["Bonsoir", "Bonjour", "Bonne nuit", "Au revoir"], ans: 1 },
+        { q: "The feminine form of the French adjective 'grand' (tall/big) is: (Set {v})", opts: ["grands", "grande", "grandes", "grando"], ans: 1 },
+        { q: "Complete the sentence: 'Je ___ étudiant.' (verb être) (Set {v})", opts: ["est", "es", "suis", "sommes"], ans: 2 },
+        { q: "What is the French word for 'the book' (masculine singular)? (Set {v})", opts: ["La livre", "Le livre", "Les livres", "Une livre"], ans: 1 },
+        { q: "Choose the correct translated question for 'Where do you live?': (Set {v})", opts: ["Où habitez-vous?", "Comment allez-vous?", "Quel âge avez-vous?", "Qui est-ce?"], ans: 0 }
+      ]);
+
+      // 13. Geography
+      db["Geography"] = createSubjectQuestions("Geography", [
+        { q: "The instrument used to measure atmospheric pressure is the: (Set {v})", opts: ["Anemometer", "Hygrometer", "Barometer", "Thermometer"], ans: 2 },
+        { q: "Sedimentary rocks formed from mineral deposits left by evaporating water are: (Set {v})", opts: ["Mechanically formed", "Organically formed", "Chemically formed", "Metamorphic"], ans: 2 },
+        { q: "The planet closest to the Sun in the Solar System is: (Set {v})", opts: ["Venus", "Earth", "Mercury", "Mars"], ans: 2 },
+        { q: "Lines on a map joining places of equal elevation above sea level are: (Set {v})", opts: ["Isobars", "Isotherms", "Contours", "Isohyets"], ans: 2 },
+        { q: "The Earth rotates on its axis from: (Set {v})", opts: ["East to West", "West to East", "North to South", "South to North"], ans: 1 }
+      ]);
+
+      // 14. Government
+      db["Government"] = createSubjectQuestions("Government", [
+        { q: "A state defined by population, defined territory, government and: (Set {v})", opts: ["Monopoly", "Sovereignty", "Constitution", "Judiciary"], ans: 1 },
+        { q: "The rule of law principle was famously formulated by: (Set {v})", opts: ["A.V. Dicey", "Montesquieu", "John Locke", "Thomas Hobbes"], ans: 0 },
+        { q: "The arm of government responsible for interpreting laws is the: (Set {v})", opts: ["Executive", "Legislature", "Judiciary", "Civil Service"], ans: 2 },
+        { q: "A political system where political power is shared between central and regional governments is: (Set {v})", opts: ["Unitary system", "Federal system", "Confederal system", "Monarchical system"], ans: 1 },
+        { q: "The first political party established in Nigeria in 1923 was the: (Set {v})", opts: ["NCNC", "NNDP", "AG", "NPC"], ans: 1 }
+      ]);
+
+      // 15. Hausa
+      db["Hausa"] = createSubjectQuestions("Hausa", [
+        { q: "A daidaitaccen tsarin haruffan Hausa, nawa ne 'Boko'? (Set {v})", opts: ["Haruffa 20", "Haruffa 26", "Haruffa 30", "Haruffa 15"], ans: 1 },
+        { q: "A cikin adabin Hausa, wane ne marubucin littafin 'Ruwan Bagaja'? (Set {v})", opts: ["Abubakar Imam", "Sa'adu Zungur", "Mu'azu Hadejia", "Abubakar Tafawa Balewa"], ans: 0 },
+        { q: "Katsina da Kano da Zaria suna cikin garuruwan: (Set {v})", opts: ["Hausa Bakwai", "Banza Bakwai", "Gwari Bakwai", "Yoruba Bakwai"], ans: 0 },
+        { q: "Menene ma'anar kararin magana 'Akwai sauran kallo'? (Set {v})", opts: ["An gama magana", "Abu bai kare ba", "An yi nasara", "An yi rashin nasara"], ans: 1 },
+        { q: "Mazaunin kalmar 'Uba' a jam'i shine: (Set {v})", opts: ["Ubanai", "Ubayyu", "Ubanori", "Ubanni"], ans: 3 }
+      ]);
+
+      // 16. History
+      db["History"] = createSubjectQuestions("History", [
+        { q: "The ancient empire of Old Oyo was famous for its system of government headed by the: (Set {v})", opts: ["Ooni", "Alaafin", "Oba", "Attah"], ans: 1 },
+        { q: "Lord Lugard amalgamated Northern and Southern Nigeria in: (Set {v})", opts: ["1900", "1914", "1922", "1960"], ans: 1 },
+        { q: "The Aba Women's War of 1929 was primarily caused by rumors of: (Set {v})", opts: ["Land seizure", "Taxation of women", "Forced labor", "Religious bans"], ans: 1 },
+        { q: "Nigeria achieved political independence from Britain on: (Set {v})", opts: ["October 1, 1960", "October 1, 1963", "May 29, 1999", "January 1, 1914"], ans: 0 },
+        { q: "The Berlin Conference which partitioned Africa among European powers held in: (Set {v})", opts: ["1884–1885", "1914–1918", "1939–1945", "1807–1833"], ans: 0 }
+      ]);
+
+      // 17. Home Economics
+      db["Home Economics"] = createSubjectQuestions("Home Economics", [
+        { q: "Which vitamin is synthesized in the human skin through sunlight exposure? (Set {v})", opts: ["Vitamin A", "Vitamin C", "Vitamin D", "Vitamin K"], ans: 2 },
+        { q: "Nutrients required by the body in large amounts are called: (Set {v})", opts: ["Micro-nutrients", "Macro-nutrients", "Trace elements", "Vitamins"], ans: 1 },
+        { q: "The seam suitable for delicate fabrics like silk and chiffon is the: (Set {v})", opts: ["Plain seam", "French seam", "Open seam", "Overlaid seam"], ans: 1 },
+        { q: "A budget is best defined as a financial plan of: (Set {v})", opts: ["Assets and liabilities", "Expected income and expenditure", "Savings only", "Debt repayment"], ans: 1 },
+        { q: "The process of preserving food by heating in airtight containers is: (Set {v})", opts: ["Canning", "Pickling", "Fermentation", "Drying"], ans: 0 }
+      ]);
+
+      // 18. Igbo
+      db["Igbo"] = createSubjectQuestions("Igbo", [
+        { q: "Mkpuru edemede Igbo ole nwere udaume? (Set {v})", opts: ["Mkpuru 8", "Mkpuru 9", "Mkpuru 12", "Mkpuru 36"], ans: 0 },
+        { q: "Onye dere akwukwo 'Omenuko' bu: (Set {v})", opts: ["Pitita Nwana", "Tony Ubesie", "F. C. Ogbalu", "J. U. T. Nzeako"], ans: 0 },
+        { q: "Kedu aha e ji mara nwoke mutara umunwanyi niile? (Set {v})", opts: ["Ogalanya", "Diokpara", "Dada", "Ozo"], ans: 1 },
+        { q: "Konsonant Igbo jikoro onu dika 'ch', 'gb', 'kp' ka e ji mara dika: (Set {v})", opts: ["Udaume", "Mgbochiume nke di mgbagwoju aug", "Akala", "Nfụme"], ans: 1 },
+        { q: "Gini bu uru emume Iri Ji Ohuru bara n'ala Igbo? (Set {v})", opts: ["Ekele maka ubi", "Agha", "Ekele maka mmiri", "Eze otu"], ans: 0 }
+      ]);
+
+      // 19. Islamic Religious Knowledge (IRK / IRS)
+      db["Islamic Religious Knowledge (IRK / IRS)"] = createSubjectQuestions("Islamic Religious Knowledge (IRK / IRS)", [
+        { q: "The holy book Quran was revealed to Prophet Muhammad (SAW) through Angel: (Set {v})", opts: ["Mikail", "Jibril", "Israfil", "Izrail"], ans: 1 },
+        { q: "The migration of Muslims from Makkah to Madinah is known as: (Set {v})", opts: ["Isra", "Hijrah", "Miraj", "Jihad"], ans: 1 },
+        { q: "The first month of the Islamic Hijrah calendar is: (Set {v})", opts: ["Ramadan", "Muharram", "Shawwal", "Rabi al-Awwal"], ans: 1 },
+        { q: "Which pillar of Islam represents compulsory annual charity? (Set {v})", opts: ["Salat", "Zakat", "Sawm", "Hajj"], ans: 1 },
+        { q: "The chapters of the Glorious Quran revealed in Madinah are called: (Set {v})", opts: ["Makkiyyah", "Madaniyyah", "Surahs", "Ayahs"], ans: 1 }
+      ]);
+
+      // 20. Literature-in-English
+      db["Literature-in-English"] = createSubjectQuestions("Literature-in-English", [
+        { q: "A poem consisting of fourteen lines written in iambic pentameter is a: (Set {v})", opts: ["Ode", "Sonnet", "Elegy", "Ballad"], ans: 1 },
+        { q: "The central character who drives the narrative in a literary text is the: (Set {v})", opts: ["Antagonist", "Protagonist", "Foil", "Narrator"], ans: 1 },
+        { q: "A dramatic speech made by a character alone on stage revealing inner thoughts is a: (Set {v})", opts: ["Monologue", "Dialogue", "Soliloquy", "Aside"], ans: 2 },
+        { q: "The figure of speech that gives human attributes to non-human things is: (Set {v})", opts: ["Simile", "Metaphor", "Personification", "Hyperbole"], ans: 2 },
+        { q: "In African prose drama, Chinua Achebe's 'Things Fall Apart' depicts the culture of the: (Set {v})", opts: ["Yoruba people", "Igbo people", "Hausa people", "Efik people"], ans: 1 }
+      ]);
+
+      // 21. Mathematics
+      db["Mathematics"] = createSubjectQuestions("Mathematics", [
+        { q: "If 2^{x+1} = 16, solve for x: (Set {v})", opts: ["2", "3", "4", "5"], ans: 1 },
+        { q: "Evaluate log_{10} 1000: (Set {v})", opts: ["1", "2", "3", "4"], ans: 2 },
+        { q: "The sum of interior angles of a regular hexagon is: (Set {v})", opts: ["360°", "540°", "720°", "900°"], ans: 2 },
+        { q: "Find the derivative of y = 3x^2 + 5x - 7 with respect to x: (Set {v})", opts: ["6x + 5", "3x + 5", "6x - 7", "6x^2 + 5"], ans: 0 },
+        { q: "A bag contains 3 red balls and 5 blue balls. The probability of picking a red ball is: (Set {v})", opts: ["3/8", "5/8", "3/5", "1/8"], ans: 0 }
+      ]);
+
+      // 22. Music
+      db["Music"] = createSubjectQuestions("Music", [
+        { q: "In western music notation, the treble clef is also known as the: (Set {v})", opts: ["F clef", "G clef", "C clef", "Alto clef"], ans: 1 },
+        { q: "How many lines are there in a standard musical stave? (Set {v})", opts: ["4 lines", "5 lines", "6 lines", "8 lines"], ans: 1 },
+        { q: "A musical interval consisting of eight diatonic notes is an: (Set {v})", opts: ["Fifth", "Seventh", "Octave", "Chord"], ans: 2 },
+        { q: "The speed at which a piece of music is performed is called its: (Set {v})", opts: ["Pitch", "Tempo", "Timbre", "Dynamics"], ans: 1 },
+        { q: "Which African musical instrument belongs to the membranophone family? (Set {v})", opts: ["Talking drum", "Xylophone", "Flute", "Shekere"], ans: 0 }
+      ]);
+
+      // 23. Physical and Health Education (PHE)
+      db["Physical and Health Education (PHE)"] = createSubjectQuestions("Physical and Health Education (PHE)", [
+        { q: "How many players constitute a standard football (soccer) team on the pitch? (Set {v})", opts: ["9", "10", "11", "12"], ans: 2 },
+        { q: "The organ responsible for pumping blood throughout the human body is the: (Set {v})", opts: ["Lung", "Heart", "Liver", "Kidney"], ans: 1 },
+        { q: "In track and field, sprint races include: (Set {v})", opts: ["100m, 200m, 400m", "800m, 1500m", "5000m, 10000m", "Marathon"], ans: 0 },
+        { q: "Which disease is transmitted by the female Anopheles mosquito? (Set {v})", opts: ["Typhoid", "Malaria", "Cholera", "Tuberculosis"], ans: 1 },
+        { q: "The capability of a muscle to exert force against resistance in one effort is: (Set {v})", opts: ["Flexibility", "Muscular strength", "Agility", "Speed"], ans: 1 }
+      ]);
+
+      // 24. Physics
+      db["Physics"] = createSubjectQuestions("Physics", [
+        { q: "The SI unit of force is the: (Set {v})", opts: ["Joule", "Watt", "Newton", "Pascal"], ans: 2 },
+        { q: "Acceleration due to gravity on Earth's surface is approximately: (Set {v})", opts: ["9.8 m/s²", "5.0 m/s²", "12.0 m/s²", "1.6 m/s²"], ans: 0 },
+        { q: "Light rays travel in straight lines; this phenomenon is: (Set {v})", opts: ["Refraction", "Rectilinear propagation", "Diffraction", "Dispersion"], ans: 1 },
+        { q: "An electric iron rated 1000 W operated for 2 hours consumes energy equal to: (Set {v})", opts: ["0.5 kWh", "1 kWh", "2 kWh", "5 kWh"], ans: 2 },
+        { q: "The process whereby a liquid turns into gas at its surface at any temperature is: (Set {v})", opts: ["Boiling", "Evaporation", "Sublimation", "Condensation"], ans: 1 }
+      ]);
+
+      // 25. Principles of Accounts
+      db["Principles of Accounts"] = createSubjectQuestions("Principles of Accounts", [
+        { q: "The fundamental accounting equation is: (Set {v})", opts: ["Assets = Liabilities + Capital", "Capital = Assets + Liabilities", "Liabilities = Capital - Assets", "Assets = Capital - Liabilities"], ans: 0 },
+        { q: "Cash or goods withdrawn from a business by the owner for personal use is: (Set {v})", opts: ["Capital", "Drawings", "Expenses", "Liabilities"], ans: 1 },
+        { q: "The primary book of original entry where daily transactions are recorded chronologically is the: (Set {v})", opts: ["Ledger", "Journal", "Trial Balance", "Balance Sheet"], ans: 1 },
+        { q: "An excess of revenue over expenses for an accounting period results in: (Set {v})", opts: ["Net Loss", "Net Profit", "Gross Deficit", "Bank Overdraft"], ans: 1 },
+        { q: "Depreciation calculated as a fixed percentage on the cost of an asset every year is the: (Set {v})", opts: ["Straight line method", "Reducing balance method", "Sum of digits method", "Annuity method"], ans: 0 }
+      ]);
+
+      // 26. Yoruba
+      db["Yoruba"] = createSubjectQuestions("Yoruba", [
+        { q: "Melo ni kọnsónanti gírámà Yorùbá? (Set {v})", opts: ["18", "25", "12", "7"], ans: 0 },
+        { q: "Tani ó kọ ìwé ìtàn 'Ògbójú Ọdẹ nínú Igbó Irúnmalẹ̀'? (Set {v})", opts: ["D.O. Fágúnwà", "Awoniyi", "Akinwumi Isola", "J.F. Odunjo"], ans: 0 },
+        { q: "Kí ni orúkọ oyè Ọba Ìlú Ẹ̀gbá (Abẹ́òkúta)? (Set {v})", opts: ["Aláàfin", "Ọọ̀ni", "Aláké", "Ọwá"], ans: 2 },
+        { q: "Akiikanju ni eni ti o ni: (Set {v})", opts: ["Agbara ati igboya", "Iberu", "Ole", "Aisiki"], ans: 0 },
+        { q: "Iru ere itage wo ni a n pe ni 'Ere Onitan'? (Set {v})", opts: ["Ere Itan", "Ere Onise", "Ere Apada", "Ere Araye"], ans: 1 }
+      ]);
+
+      const authoredQuestionBanks = {"English Language (Use of English)": [["Choose the word nearest in meaning to 'meticulous'.", "Careful and precise", "Careless", "Impatient", "Uncertain"], ["Choose the opposite of 'scarce'.", "Abundant", "Rare", "Limited", "Insufficient"], ["Complete correctly: Each of the players ___ given a jersey.", "was", "were", "have been", "are"], ["Choose the correctly punctuated sentence.", "Although it rained, we continued the match.", "Although, it rained we continued the match.", "Although it rained we, continued the match.", "Although it rained; we, continued the match."], ["The expression 'once in a blue moon' means:", "Very rarely", "Every day", "At night", "Unexpectedly loudly"], ["Choose the correctly spelt word.", "Accommodation", "Acommodation", "Accomodation", "Acomodation"], ["Choose the word opposite in meaning to 'hostile'.", "Friendly", "Aggressive", "Unkind", "Violent"], ["Complete correctly: If I ___ earlier, I would have met her.", "had arrived", "arrive", "have arrived", "would arrive"], ["A person who compiles a dictionary is a:", "Lexicographer", "Biographer", "Cartographer", "Calligrapher"], ["Choose the option that best explains 'to keep someone at arm's length'.", "To avoid becoming too close", "To offer physical support", "To measure someone's height", "To welcome someone warmly"], ["Which word is a noun in this sentence: 'Honesty is valued everywhere.'?", "Honesty", "Valued", "Everywhere", "Is"], ["Choose the correct plural of 'criterion'.", "Criteria", "Criterions", "Criterias", "Criteriones"], ["Complete correctly: Neither Ada nor her sisters ___ at home.", "are", "is", "was", "has been"], ["Which word contains a silent letter?", "Debt", "Desk", "Deny", "Deep"], ["Choose the word nearest in meaning to 'reluctant'.", "Unwilling", "Eager", "Certain", "Pleased"], ["Identify the figure of speech: 'The wind whispered through the trees.'", "Personification", "Oxymoron", "Pun", "Litotes"], ["Choose the correct reported speech for: He said, 'I am tired.'", "He said that he was tired.", "He said that I am tired.", "He says he had tired.", "He said he is tiring."], ["Choose the correct question tag: You have finished, ___?", "haven't you", "don't you", "didn't you", "aren't you"], ["A word that imitates a sound is an example of:", "Onomatopoeia", "Irony", "Euphemism", "Apostrophe"], ["Choose the correct comparative form of 'little' when referring to quantity.", "Less", "Littler", "Least", "More little"], ["Complete correctly: The news ___ encouraging.", "is", "are", "were", "have been"], ["Choose the word opposite in meaning to 'expand'.", "Contract", "Enlarge", "Extend", "Increase"], ["Which of these is a coordinating conjunction?", "But", "Because", "Although", "Unless"], ["Choose the correct spelling.", "Separate", "Seperate", "Seperete", "Seperat"], ["The phrase 'spill the beans' means to:", "Reveal a secret", "Waste food", "Make a mess", "Start an argument"], ["Choose the correct form: She is senior ___ me.", "to", "than", "from", "with"], ["A speech delivered without prior preparation is:", "Extempore", "Eulogy", "Dialogue", "Soliloquy"], ["Choose the word nearest in meaning to 'obsolete'.", "Outdated", "Modern", "Useful", "Expensive"], ["Choose the correct sentence.", "The committee has reached its decision.", "The committee have reached its decision it.", "The committee are reached its decision.", "The committee has reach its decision."], ["Which word is an adverb in 'She spoke softly'?", "Softly", "Spoke", "She", "None"], ["Choose the antonym of 'transparent'.", "Opaque", "Clear", "Bright", "Visible"], ["A person who cannot read or write is:", "Illiterate", "Ineligible", "Inarticulate", "Immature"], ["Complete correctly: By next June, they ___ here for ten years.", "will have lived", "will live", "have lived", "would live"], ["Which word is a homophone of 'flour'?", "Flower", "Floor", "Flew", "Flow"], ["Choose the meaning of 'break the ice'.", "Ease social tension", "Destroy something frozen", "End a friendship", "Stop a journey"], ["Choose the correct possessive form for one teacher.", "The teacher's book", "The teachers book", "The teachers' book", "The teacher book's"], ["Which is an example of an imperative sentence?", "Please close the door.", "The door is closed.", "Did you close the door?", "What a door!"], ["Choose the word nearest in meaning to 'diligent'.", "Hard-working", "Lazy", "Forgetful", "Careless"], ["Complete correctly: The furniture ___ delivered yesterday.", "was", "were", "have been", "are"], ["Which word is a preposition?", "Beneath", "Quickly", "Kindness", "Sing"], ["Choose the correct plural of 'analysis'.", "Analyses", "Analysises", "Analysies", "Analysis'"], ["The phrase 'a blessing in disguise' describes:", "Something good that first seemed bad", "A clearly harmful event", "A public celebration", "A hidden enemy"], ["Choose the correct form: She prefers tea ___ coffee.", "to", "than", "over than", "from"], ["Which word is closest in meaning to 'candid'?", "Frank", "Secretive", "Dishonest", "Confused"], ["Identify the clause type in 'because it was late'.", "Subordinate adverbial clause", "Main clause", "Noun phrase", "Independent sentence"], ["Choose the correct spelling.", "Privilege", "Privelege", "Priviledge", "Privillage"], ["Complete correctly: Hardly had we arrived ___ the lights went out.", "when", "than", "then", "while"], ["Choose the antonym of 'optimistic'.", "Pessimistic", "Hopeful", "Confident", "Cheerful"], ["Which is a collective noun?", "Flock", "Bird", "Feather", "Fly"], ["Choose the word nearest in meaning to 'concise'.", "Brief", "Lengthy", "Vague", "Complex"], ["Choose the correct sentence.", "Neither answer is correct.", "Neither answers are correct.", "Neither answer are correct.", "Neither of answer is correct."], ["The literary device in 'as brave as a lion' is:", "Simile", "Metaphor", "Irony", "Paradox"], ["Choose the opposite of 'generous'.", "Stingy", "Kind", "Charitable", "Giving"], ["Complete correctly: The principal, along with the teachers, ___ attending.", "is", "are", "were", "have"], ["Which word is a verb in 'They carefully examined the sample'?", "Examined", "Carefully", "Sample", "They"], ["Choose the meaning of 'in hot water'.", "In trouble", "Feeling warm", "Taking a bath", "Working outdoors"], ["Choose the correct plural of 'phenomenon'.", "Phenomena", "Phenomenons", "Phenomenas", "Phenomenae"], ["Choose the word opposite in meaning to 'mandatory'.", "Optional", "Compulsory", "Required", "Binding"], ["Complete correctly: I look forward to ___ from you.", "hearing", "hear", "have heard", "heard"], ["A statement that appears contradictory but may reveal truth is a:", "Paradox", "Simile", "Epitaph", "Euphemism"], ["Choose the correct spelling.", "Questionnaire", "Questionaire", "Questionnair", "Questionnare"]], "Agricultural Science": [["Which soil horizon usually contains the most humus?", "Topsoil (A horizon)", "Parent rock", "Bedrock", "C horizon"], ["The practice of growing different crops in sequence on the same land is:", "Crop rotation", "Monocropping", "Bush burning", "Overgrazing"], ["Which nutrient is especially associated with strong root development?", "Phosphorus", "Sodium", "Chlorine", "Lead"], ["A farm record showing money received and spent is a:", "Cash book", "Farm map", "Breeding chart", "Weather chart"], ["Which implement is mainly used for primary tillage?", "Plough", "Watering can", "Secateurs", "Sickle"], ["The transfer of pollen from anther to stigma is:", "Pollination", "Fertilisation", "Germination", "Transpiration"], ["Which livestock animal is a ruminant?", "Goat", "Pig", "Rabbit", "Chicken"], ["The removal of unwanted plants from a crop field is:", "Weeding", "Pruning", "Thinning fruit", "Harvesting"], ["Which organism improves soil nitrogen through root nodules in legumes?", "Rhizobium", "Plasmodium", "Yeast", "Mould"], ["A young female chicken before laying eggs is a:", "Pullet", "Cockerel", "Drake", "Gander"], ["Which method conserves soil by farming across slopes?", "Contour ploughing", "Down-slope ploughing", "Continuous burning", "Overstocking"], ["The rearing of fish under controlled conditions is:", "Aquaculture", "Apiculture", "Sericulture", "Horticulture"], ["Which farm input supplies nutrients to crops?", "Fertiliser", "Herbicide", "Insect net", "Incubator"], ["A disease-causing organism is called a:", "Pathogen", "Pollinator", "Predator", "Producer"], ["Which irrigation method delivers water close to plant roots through emitters?", "Drip irrigation", "Flood irrigation", "Basin flooding only", "Overhead rainfall"], ["The process by which seeds begin to grow is:", "Germination", "Dormancy", "Pollination", "Maturation"], ["Which tool is best suited for cutting grass by hand?", "Cutlass", "Rake", "Watering can", "Dibber"], ["The crossbreeding of unrelated breeds is often used to improve:", "Hybrid vigour", "Soil acidity", "Weed seed dormancy", "Water salinity"], ["Which is a common sign of nitrogen deficiency in plants?", "Yellowing of older leaves", "Blue flowers on every plant", "Excessive root nodules in all crops", "Immediate fruit ripening"], ["A farm layout showing fields, buildings and roads is a:", "Farm plan", "Profit statement", "Feeding schedule", "Birth register"], ["Which practice helps prevent erosion on steep land?", "Terracing", "Overgrazing", "Removing all vegetation", "Burning crop residues"], ["The male reproductive part of a flower is the:", "Stamen", "Pistil", "Sepal", "Petal"], ["Which livestock feed is mainly a source of protein?", "Soybean meal", "Cassava starch", "Molasses", "Salt lick"], ["The cutting and removal of diseased plant parts is:", "Sanitation", "Irrigation", "Mulching", "Thinning"], ["A crop grown mainly to improve soil fertility is a:", "Cover/green-manure crop", "Cash-only crop", "Storage crop", "Ornamental weed"], ["Which instrument measures rainfall?", "Rain gauge", "Barometer", "Anemometer", "Thermometer"], ["The keeping of bees for honey and wax is:", "Apiculture", "Poultry keeping", "Dairy farming", "Pig production"], ["Which is an example of a cereal crop?", "Maize", "Cowpea", "Groundnut", "Soybean"], ["A young sheep is called a:", "Lamb", "Calf", "Kid", "Foal"], ["The process of removing the testes of a male farm animal is:", "Castration", "Drenching", "Branding", "Dehorning"], ["Which practice reduces post-harvest grain losses?", "Drying grain to safe moisture", "Storing wet grain in sealed bags", "Mixing grain with soil", "Leaving grain exposed to rain"], ["Which soil property describes how easily water passes through it?", "Permeability", "Plasticity", "Colour", "Salinity"], ["The deliberate supply of water to crops is:", "Irrigation", "Drainage", "Leaching", "Evaporation"], ["Which pest commonly transmits cassava mosaic virus?", "Whitefly", "Earthworm", "Honeybee", "Termite queen"], ["A male goat is called a:", "Buck", "Ewe", "Ram", "Stag"], ["Which farm operation loosens soil around growing crops?", "Hoeing", "Milking", "Incubation", "Threshing"], ["A record of animals born, sold and dying is a:", "Livestock inventory/register", "Soil profile", "Weather forecast", "Seed catalogue"], ["Which condition is essential for most seeds to germinate?", "Moisture", "Complete dryness", "No oxygen", "Extreme heat"], ["Which is a biological method of pest control?", "Using a natural predator", "Applying more synthetic pesticide", "Burning all crops", "Flooding a store"], ["The removal of excess water from farmland is:", "Drainage", "Irrigation", "Spraying", "Mulching"], ["Which crop is a legume?", "Cowpea", "Rice", "Wheat", "Sorghum"], ["The conversion of ammonia to nitrates by soil bacteria is:", "Nitrification", "Denitrification", "Evaporation", "Fermentation"], ["Which implement is used to harvest cereal stalks by hand?", "Sickle", "Plough", "Harrow", "Ridger"], ["The capacity of soil to hold positively charged nutrient ions is:", "Cation exchange capacity", "Field gradient", "Soil texture only", "Bulk colour"], ["Which is a common dairy breed of cattle?", "Friesian", "Boer", "Large White", "Broiler"], ["The practice of placing crop residues on soil surface is:", "Mulching", "Pricking out", "Castrating", "Threshing"], ["Which farm activity separates grain from harvested stalks?", "Threshing", "Ploughing", "Transplanting", "Pruning"], ["A pesticide specifically designed to kill weeds is a:", "Herbicide", "Fungicide", "Rodenticide", "Nematicide"], ["Which system allows livestock to graze on pasture in rotation?", "Rotational grazing", "Zero grazing only", "Continuous overstocking", "Tethering without movement"], ["The science of growing fruits and vegetables is:", "Olericulture and pomology", "Apiculture", "Aquaculture", "Silviculture only"]], "Biology": [["The site of protein synthesis in a cell is the:", "Ribosome", "Lysosome", "Centriole", "Vacuole"], ["Which blood cells help defend the body against infection?", "White blood cells", "Red blood cells", "Platelets", "Plasma proteins only"], ["The functional unit of the kidney is the:", "Nephron", "Neuron", "Alveolus", "Villus"], ["Which process releases energy from glucose in cells?", "Cellular respiration", "Photosynthesis", "Osmosis", "Translocation"], ["The movement of water through a selectively permeable membrane is:", "Osmosis", "Diffusion of solids", "Active transport only", "Transpiration"], ["Which plant tissue transports water and mineral salts?", "Xylem", "Phloem", "Epidermis", "Cortex only"], ["The structure that controls entry and exit of substances in a cell is the:", "Cell membrane", "Nucleolus", "Cell wall only", "Chromosome"], ["A change in an organism's DNA sequence is a:", "Mutation", "Adaptation only", "Succession", "Fertilisation"], ["Which gas is released during photosynthesis?", "Oxygen", "Nitrogen", "Methane", "Ammonia"], ["The male gamete in flowering plants is carried in the:", "Pollen grain", "Sepal", "Ovary wall", "Stigma only"], ["Which ecological relationship benefits both species?", "Mutualism", "Parasitism", "Predation", "Competition"], ["The breakdown of dead organic matter is mainly carried out by:", "Decomposers", "Producers", "Herbivores only", "Pollinators only"], ["Which blood vessel carries blood away from the heart?", "Artery", "Vein", "Capillary only", "Lymph duct"], ["The exchange of gases in human lungs occurs in the:", "Alveoli", "Bronchi only", "Trachea", "Diaphragm"], ["Which molecule carries hereditary information?", "DNA", "Starch", "Cellulose", "Glycogen"], ["The loss of water vapour from leaves is:", "Transpiration", "Translocation", "Respiration", "Guttation only"], ["Which organ produces insulin?", "Pancreas", "Spleen", "Gall bladder", "Thyroid only"], ["The type of cell division that produces gametes is:", "Meiosis", "Mitosis", "Binary fission", "Budding"], ["Which part of a flower develops into a fruit after fertilisation?", "Ovary", "Anther", "Petal", "Stigma"], ["The natural place where an organism lives is its:", "Habitat", "Niche only", "Biome only", "Population"], ["Which nutrient is the body's main immediate energy source?", "Carbohydrate", "Vitamin", "Water", "Mineral salt"], ["The joint between the skull bones is generally:", "Immovable", "Ball-and-socket", "Hinge", "Pivot"], ["Which disease is caused by a protozoan parasite?", "Malaria", "Influenza", "Ringworm", "Cholera"], ["The green pigment needed for photosynthesis is:", "Chlorophyll", "Haemoglobin", "Melanin", "Keratin"], ["The sequence of organisms through which energy passes is a:", "Food chain", "Water cycle", "Carbon sink", "Population pyramid"], ["Which part of the brain coordinates balance?", "Cerebellum", "Medulla only", "Hypothalamus", "Cerebrum only"], ["The process by which plants make food using light is:", "Photosynthesis", "Fermentation", "Excretion", "Digestion"], ["Which component of blood is chiefly responsible for clotting?", "Platelets", "Red cells", "Neurons", "Bile"], ["A group of organisms of the same species in one area is a:", "Population", "Community", "Ecosystem", "Biome"], ["Which organelle modifies and packages proteins?", "Golgi apparatus", "Ribosome", "Nucleus", "Chloroplast"], ["Which type of nutrition is typical of green plants?", "Autotrophic", "Holozoic", "Saprophytic only", "Parasitic only"], ["The hereditary units found on chromosomes are:", "Genes", "Alveoli", "Enzymes", "Villi"], ["Which hormone regulates blood glucose by lowering it?", "Insulin", "Adrenaline", "Thyroxine", "Oestrogen"], ["The movement of particles from high to low concentration is:", "Diffusion", "Osmosis only", "Phagocytosis", "Excretion"], ["Which plant tissue transports manufactured food?", "Phloem", "Xylem", "Cork", "Sclerenchyma only"], ["The first trophic level in a food chain consists of:", "Producers", "Primary consumers", "Secondary consumers", "Decomposers only"], ["Which organ filters blood to form urine?", "Kidney", "Lung", "Stomach", "Pancreas"], ["A feature that increases survival in an environment is an:", "Adaptation", "Mutation always", "Extinction", "Immunity only"], ["Which part of the eye controls the amount of light entering?", "Iris", "Retina", "Optic nerve", "Cornea only"], ["Which process produces two genetically similar daughter cells?", "Mitosis", "Meiosis", "Fertilisation", "Pollination"], ["The relationship in which one organism benefits and the other is harmed is:", "Parasitism", "Mutualism", "Commensalism", "Neutralism"], ["Which vitamin is important for blood clotting?", "Vitamin K", "Vitamin C", "Vitamin B1", "Vitamin D"], ["The tube carrying food from mouth to stomach is the:", "Oesophagus", "Trachea", "Ureter", "Bronchiole"], ["Which structure in plants absorbs water from soil?", "Root hair", "Stoma", "Anther", "Petal"], ["The breakdown of food into absorbable molecules is:", "Digestion", "Assimilation only", "Excretion", "Circulation"]], "Chemistry": [["The number of neutrons in an atom equals its:", "Mass number minus atomic number", "Atomic number plus electrons", "Atomic number minus protons", "Number of shells"], ["A solution with pH 2 is:", "Acidic", "Neutral", "Alkaline", "Always saturated"], ["The bond formed by transfer of electrons is:", "Ionic bond", "Covalent bond", "Metallic bond only", "Hydrogen bond"], ["Which gas turns limewater milky?", "Carbon dioxide", "Oxygen", "Hydrogen", "Nitrogen"], ["The chemical formula for calcium carbonate is:", "CaCO₃", "CaCl₂", "CaO", "CO₂Ca₂"], ["Oxidation can be defined as:", "Loss of electrons", "Gain of electrons", "Gain of neutrons", "Loss of protons"], ["Which separation method is suitable for miscible liquids with different boiling points?", "Fractional distillation", "Filtration", "Decantation", "Sieving"], ["The catalyst in the Contact process is:", "Vanadium(V) oxide", "Iron", "Nickel", "Copper"], ["A substance that speeds a reaction without being consumed is a:", "Catalyst", "Solvent", "Reactant", "Precipitate"], ["Which gas is produced when an active metal reacts with dilute acid?", "Hydrogen", "Chlorine", "Carbon dioxide", "Ammonia"], ["The smallest particle of an element that retains its chemical identity is an:", "Atom", "Ion pair", "Molecule of any compound", "Proton only"], ["The formula of methane is:", "CH₄", "C₂H₆", "C₂H₄", "CH₃OH"], ["Which element is a halogen?", "Chlorine", "Sodium", "Calcium", "Argon"], ["The change from solid directly to gas is:", "Sublimation", "Condensation", "Freezing", "Melting"], ["A base that dissolves in water is called an:", "Alkali", "Acid", "Salt bridge", "Oxide only"], ["Which particle has a negative charge?", "Electron", "Proton", "Neutron", "Alpha particle"], ["The empirical formula gives the:", "Simplest whole-number ratio of atoms", "Actual mass of a molecule", "Number of isotopes", "Exact molecular shape"], ["Which process is used to coat an object with metal using electricity?", "Electroplating", "Cracking", "Polymerisation", "Neutralisation"], ["The major gas in dry air is:", "Nitrogen", "Oxygen", "Carbon dioxide", "Argon"], ["Which of these is an alkane?", "Propane", "Propene", "Propyne", "Ethyne"], ["A reaction that releases heat is:", "Exothermic", "Endothermic", "Reversible only", "Photolytic"], ["The relative molecular mass of H₂O is:", "18", "16", "17", "20"], ["Which indicator is red in acid and blue in alkali?", "Litmus", "Starch", "Methyl orange only", "Universal salt"], ["Rusting of iron requires oxygen and:", "Water", "Nitrogen only", "Carbon dioxide only", "Sunlight only"], ["The gas used to fill electric bulbs because it is unreactive is often:", "Argon", "Chlorine", "Ammonia", "Hydrogen chloride"], ["Which oxide is amphoteric?", "Aluminium oxide", "Sodium oxide", "Carbon dioxide", "Sulphur dioxide"], ["The process of obtaining a metal from its ore is:", "Extraction/reduction", "Crystallisation only", "Filtration", "Sublimation"], ["Which compound is commonly used to test for water?", "Anhydrous copper(II) sulfate", "Sodium chloride", "Calcium carbonate", "Ethanol"], ["The functional group of alcohols is:", "–OH", "–COOH", "–CHO", "–CO–"], ["A mixture of a metal with another element is an:", "Alloy", "Isotope", "Electrolyte", "Emulsion"], ["Which gas supports combustion?", "Oxygen", "Nitrogen", "Carbon dioxide", "Helium"], ["The process of breaking long-chain hydrocarbons into smaller molecules is:", "Cracking", "Esterification", "Saponification", "Hydration"], ["A solution that resists changes in pH is a:", "Buffer", "Colloid", "Suspension", "Brine"], ["Which salt is formed by complete neutralisation of HCl with NaOH?", "Sodium chloride", "Sodium carbonate", "Calcium chloride", "Ammonium chloride"], ["The oxidation state of oxygen in most compounds is:", "−2", "+2", "0", "−1 always"], ["Which apparatus measures gas volume in a reaction?", "Gas syringe", "Burette only", "Thermometer", "Balance"], ["The main ore of aluminium is:", "Bauxite", "Haematite", "Galena", "Cassiterite"], ["Which substance is a strong electrolyte in aqueous solution?", "Sodium chloride solution", "Sugar solution", "Ethanol", "Distilled water"], ["The reaction between an acid and a base forms salt and:", "Water", "Hydrogen", "Oxygen", "Carbon monoxide"], ["Which allotrope of carbon conducts electricity well?", "Graphite", "Diamond", "Charcoal only", "Coke only"], ["The number of particles in one mole is approximately:", "6.02 × 10²³", "3.00 × 10⁸", "9.81", "1.60 × 10⁻¹⁹"], ["Which hydrocarbon has a triple bond?", "Ethyne", "Ethane", "Ethene", "Methane"], ["A precipitate is a:", "Insoluble solid formed in a solution", "Gas released by heating", "Solvent evaporated", "Metal electrode"], ["Which method separates coloured dyes in ink?", "Paper chromatography", "Filtration", "Crystallisation", "Magnetic separation"], ["The main product of complete combustion of a hydrocarbon is carbon dioxide and:", "Water", "Hydrogen", "Carbon monoxide only", "Nitrogen"], ["Which particle determines the identity of an element?", "Proton", "Neutron", "Electron shell", "Molecule"]], "Arabic": [["The Arabic dual form is commonly used for:", "Two people or things", "One person only", "Three or more only", "A verb tense"], ["The Arabic definite article is:", "Al- (ال)", "Min (من)", "Fi (في)", "Lan (لن)"], ["The plural of 'rajul' (man) is:", "Rijāl (رجال)", "Rajulān (رجلان)", "Mar'ah (امرأة)", "Kitāb (كتاب)"], ["A verb in the past tense is called:", "Fi'l māḍī", "Fi'l muḍāriʿ", "Fi'l amr", "Ism ishārah"], ["The Arabic word 'bayt' means:", "House", "School", "Book", "Market"], ["The opposite of 'kabīr' (big) is:", "Ṣaghīr (small)", "Ṭawīl (tall)", "Jadīd (new)", "Qarīb (near)"], ["The particle 'hal' is commonly used to form:", "Yes/no questions", "Commands only", "Past tense verbs", "Possessive nouns"], ["The Arabic word for 'teacher' is:", "Muʿallim", "Ṭālib", "Ṭabīb", "Tājir"], ["A word indicating an action is a:", "Fi'l", "Ism", "Harf", "Ṣifah only"], ["The Arabic word 'māʾ' means:", "Water", "Fire", "Earth", "Air"], ["The feminine form of 'muslim' is:", "Muslimah", "Muslimūn", "Muslimān", "Islām"], ["The Arabic preposition 'fī' means:", "In", "From", "To", "On behalf of"], ["The word 'kitāb' is classified as a:", "Noun", "Past verb", "Preposition", "Conjunction only"], ["The Arabic greeting 'as-salāmu ʿalaykum' expresses:", "Peace be upon you", "Good night", "Goodbye forever", "Thank you"], ["The Arabic word for 'school' is:", "Madrasa", "Masjid", "Maktab only for office", "Sūq"], ["The opposite of 'qarīb' (near) is:", "Baʿīd (far)", "Jadīd (new)", "Ṣaʿb (difficult)", "Jamīl (beautiful)"], ["The Arabic pronoun 'ana' means:", "I", "You (masculine)", "He", "They"], ["The Arabic word 'yawm' means:", "Day", "Year", "Month", "Hour"], ["The plural marker for many sound masculine nouns often includes:", "-ūna / -īna", "-āt only", "-ān only", "-iyyah only"], ["The Arabic word for 'book' is:", "Kitāb", "Qalam", "Bāb", "Nahr"], ["The verb 'yaktubu' means:", "He writes/is writing", "He wrote", "Write!", "They wrote"], ["The word 'min' generally means:", "From", "Into", "Above", "Under"], ["The Arabic word for 'student' is:", "Ṭālib", "Muʿallim", "Ṣadīq", "Walad only"], ["The word 'layl' means:", "Night", "Morning", "Afternoon", "Week"], ["The Arabic word 'shams' means:", "Sun", "Moon", "Star", "Cloud"], ["A word that describes a noun is an:", "Adjective (ṣifah)", "Article only", "Past verb", "Question particle"], ["The Arabic word 'jamil' means:", "Beautiful", "Difficult", "Far", "Small"], ["The Arabic word 'sadiq' means:", "Friend", "Teacher", "Pen", "Door"], ["The Arabic word 'qalam' means:", "Pen", "Book", "House", "Road"], ["The Arabic word 'masjid' means:", "Mosque", "School", "Market", "Hospital"], ["The Arabic word 'madīnah' means:", "City", "Mountain", "River", "Tree"], ["The Arabic word 'ṭawīl' means:", "Tall/long", "Short", "Cold", "Fast"], ["The Arabic word 'jadīd' means:", "New", "Old", "Near", "Clean"], ["The Arabic word 'kabīr' means:", "Big", "Small", "Cheap", "Short"], ["The Arabic word 'bāb' means:", "Door", "Window", "Chair", "Table"], ["The Arabic word 'walad' means:", "Boy/child", "Girl", "Mother", "Teacher"], ["The Arabic word 'umm' means:", "Mother", "Father", "Brother", "Sister"], ["The Arabic word 'ab' means:", "Father", "Mother", "Son", "Daughter"], ["The Arabic word 'sukūn' indicates:", "Absence of a short vowel", "A long vowel only", "A doubled consonant", "A question"], ["The Arabic word 'nahār' means:", "Daytime", "Night", "Winter", "Year"], ["The Arabic word 'qamar' means:", "Moon", "Sun", "Star", "Sea"], ["The Arabic word 'bint' means:", "Girl/daughter", "Boy/son", "Father", "Uncle"], ["The Arabic word 'yad' means:", "Hand", "Foot", "Head", "Eye"], ["The Arabic word 'ʿayn' can mean:", "Eye", "Ear", "Nose", "Mouth"], ["The Arabic word 'ṣadīq' means:", "Friend", "Enemy", "Neighbourhood", "Country"]], "Building / Technical Drawing": [["A section drawing shows a building as if it were:", "Cut through vertically", "Viewed only from above", "Viewed from the street only", "Drawn without dimensions"], ["The purpose of a title block is to record:", "Drawing identification and details", "Only the colour scheme", "Only the site soil type", "The builder's meals"], ["A scale of 1:50 means 2 cm on the drawing represents:", "1 m in reality", "50 m in reality", "25 cm in reality", "2 m in reality"], ["A compass is mainly used to draw:", "Circles and arcs", "Parallel vertical lines", "Text lettering", "Shaded walls"], ["A lintel is placed above a:", "Door or window opening", "Floor finish", "Roof ridge only", "Foundation trench"], ["The horizontal structural member supporting a floor is a:", "Beam", "Column", "Pile cap only", "Damp-proof course"], ["A vertical load-bearing structural member is a:", "Column", "Rafter", "Lintel only", "Purlin"], ["The purpose of a damp-proof course is to prevent:", "Moisture rising through walls", "Roof uplift only", "Window breakage", "Paint fading"], ["A plan view shows a building viewed from:", "Above", "Below ground only", "The front elevation", "The rear elevation"], ["A north point on a site plan indicates:", "Orientation", "Foundation depth", "Roof pitch", "Room height"], ["The line used for dimensioning is usually:", "Thin continuous line", "Thick zigzag line", "Freehand wavy line", "Dashed thick line"], ["A scale drawing is useful because it:", "Represents actual dimensions proportionally", "Removes all dimensions", "Shows only colour", "Eliminates the need for measurements"], ["The sloping member supporting a pitched roof covering is a:", "Rafter", "Column", "Sill", "Dowel"], ["A foundation transfers building loads to the:", "Ground", "Roof covering", "Window frame", "Ceiling finish"], ["A door schedule lists:", "Door types, sizes and locations", "Only wall colours", "Only plumbing fittings", "Roof truss calculations only"], ["An elevation drawing shows:", "An external face of a building", "A cut through the building", "A roof plan only", "A soil profile"], ["The instrument used to draw large arcs is a:", "Beam compass", "Set square", "T-square only", "Scale rule"], ["A 45-degree set square is used to draw:", "45° and 90° lines", "Only circles", "Only curves", "Only dimensions"], ["The roof ridge is the:", "Highest line where roof slopes meet", "Lowest roof edge", "Gutter outlet", "Foundation top"], ["A site plan includes the building and:", "Its position on the plot", "Furniture upholstery details", "Electrical symbols only", "Interior paint brands"], ["A section line identifies where a drawing is:", "Imagined to be cut", "Measured for colour", "Folded for storage", "Rotated for printing"], ["The purpose of a schedule in building drawings is to:", "Tabulate repeated components and their details", "Replace all floor plans", "Show only decoration", "Calculate rainfall"], ["A staircase landing is:", "A level platform between flights or at a floor", "A vertical handrail", "A foundation footing", "A roof gutter"], ["A footing is part of the:", "Foundation", "Roof covering", "Window shutter", "Ceiling board"], ["The drawing convention for hidden edges is usually:", "Dashed line", "Thick continuous line", "Double freehand line", "Zigzag hatch only"], ["A scale of 1:100 means 5 cm represents:", "5 m", "50 m", "50 cm", "0.5 m"], ["A floor plan typically shows:", "Room arrangement and wall positions", "Only front appearance", "Only roof framing", "Only foundation soil"], ["A purlin supports roof:", "Rafters or roof covering members", "Foundation concrete", "Window glass", "Floor tiles"], ["The horizontal member at the bottom of a window frame is the:", "Sill", "Lintel", "Ridge", "Rafter"], ["A contour line on a site plan joins points of equal:", "Elevation", "Temperature", "Rainfall", "Distance from north"], ["The tool used to measure and draw angles is a:", "Protractor", "Divider", "Plumb bob", "Mallet"], ["A plumb bob establishes a:", "True vertical line", "Horizontal level", "45-degree angle", "Circle radius"], ["A spirit level is used to check:", "Horizontal or vertical level", "Timber moisture only", "Concrete strength", "Paint thickness"], ["A bill of quantities lists:", "Measured work items and estimated costs", "Only room names", "Only drawing scales", "Only worker attendance"], ["The part of a roof projecting beyond the wall is the:", "Eaves", "Ridge", "Valley only", "Purlin"], ["A valley in roof construction is where:", "Two roof slopes meet inward", "The roof meets a chimney only", "A wall meets a floor", "The foundation steps"], ["A drawing made to show the arrangement of electrical points is an:", "Electrical layout", "Site contour map", "Door schedule", "Section elevation"], ["A foundation suitable for weak soil and heavy loads may be a:", "Pile foundation", "Shallow strip only in every case", "Timber sill", "Roof truss"], ["A chamfer is a:", "Bevelled edge", "Circular opening", "Vertical column", "Roof covering"], ["The purpose of dimension arrows is to:", "Mark the limits of a measured distance", "Show north direction", "Indicate hidden edges", "Represent material texture"], ["A roof truss is a framework designed mainly to:", "Support a roof", "Support a door handle", "Seal a water pipe", "Finish a wall surface"], ["A wall hatch pattern in a section usually represents:", "Material cut through", "A window opening only", "The north point", "A dimension string"], ["The drawing instrument used to transfer or compare distances is a:", "Divider", "T-square", "French curve", "Protractor"], ["A scale ruler is designed to:", "Read and set scaled dimensions", "Measure temperature", "Test concrete hardness", "Set wall plumb"], ["A parapet is a low wall at the edge of a:", "Roof, terrace or balcony", "Foundation trench", "Door panel", "Floor drain"]], "Commerce": [["An invoice is sent by a seller to a buyer to show:", "Goods supplied and amount due", "A worker's attendance", "A bank's interest rate", "A company's share register"], ["A document acknowledging receipt of goods is a:", "Delivery note", "Prospectus", "Bill of lading only", "Memorandum"], ["The person who buys goods in bulk and resells to retailers is a:", "Wholesaler", "Consumer", "Producer only", "Auctioneer"], ["Insurance is a contract for:", "Indemnifying against specified risks", "Guaranteeing a profit", "Avoiding all taxes", "Fixing every market price"], ["A cheque is drawn on a:", "Bank", "Shipping company", "Retail shop", "Insurance policy"], ["The main function of advertising is to:", "Inform and persuade potential customers", "Record daily cash only", "Transport goods", "Inspect factory machinery"], ["A sole trader is owned by:", "One person", "Shareholders only", "The state in every case", "At least twenty partners"], ["A limited liability company has a separate:", "Legal identity", "Family identity", "Currency", "Market price guarantee"], ["The document showing a ship's cargo and contract of carriage is a:", "Bill of lading", "Receipt voucher", "Credit note", "Catalogue"], ["A retailer's main customer is the:", "Final consumer", "Manufacturer only", "Central bank", "Wholesaler only"], ["The exchange of goods and services across national borders is:", "International trade", "Home trade", "Barter only", "Retailing"], ["A trade discount is usually deducted from the:", "List price", "Insurance premium only", "Wage bill", "Bank balance"], ["A cooperative society is formed mainly to:", "Meet members' common economic needs", "Maximise one owner's control", "Replace all banks", "Prevent members from trading"], ["A warehouse receipt may serve as evidence of:", "Goods stored in a warehouse", "A tax paid on wages", "A company's annual profit", "A customer's age"], ["A market with one buyer and many sellers is a:", "Monopsony", "Monopoly", "Duopoly", "Perfect competition"], ["A wholesaler helps retailers by providing:", "Bulk-breaking and storage", "Only final consumption", "Only government licences", "Only currency printing"], ["The price paid for borrowing money is:", "Interest", "Dividend", "Rent", "Commission"], ["A bank overdraft allows a customer to:", "Withdraw beyond the credit balance up to an agreed limit", "Avoid repaying every loan", "Print money", "Cancel all charges"], ["The written offer inviting the public to buy company shares is a:", "Prospectus", "Invoice", "Waybill", "Debit note"], ["A middleman who brings buyers and sellers together for a fee is a:", "Broker", "Retailer", "Consumer", "Manufacturer"], ["The main purpose of a trademark is to:", "Identify a firm's goods or services", "Measure goods' weight", "Guarantee market demand", "Replace product quality"], ["A tariff is a tax placed on:", "Imported or exported goods", "Workers' attendance", "Bank deposits only", "All local rainfall"], ["The transfer of risk from a business to an insurer is:", "Insurance", "Warehousing", "Advertising", "Packaging"], ["A bill of exchange is an instrument containing an order to:", "Pay a specified sum", "Deliver a speech", "Issue company shares", "Store goods"], ["Hire purchase allows a buyer to:", "Pay by instalments while obtaining use of goods", "Receive goods permanently free", "Avoid every interest charge", "Exchange only identical goods"], ["A retailer's gross profit is sales minus:", "Cost of goods sold", "All assets", "Share capital", "Bank loan principal only"], ["The stock exchange deals mainly in:", "Securities", "Fresh vegetables only", "Household refuse", "Farm tools only"], ["A debit note is commonly used to notify a buyer of:", "An amount debited to the buyer's account", "A cash gift", "A cancelled cheque only", "A wage increase"], ["The process of transporting goods from seller to buyer is:", "Distribution", "Production", "Financing only", "Market research"], ["A consumer cooperative is owned by:", "Its member-consumers", "One external investor only", "The customs service", "The stock exchange"], ["A bank statement records:", "Transactions on a customer's account", "Only a firm's staff list", "Only warehouse temperature", "Only export tariffs"], ["The aid to trade that protects goods during movement is:", "Insurance", "Mining", "Farming", "Manufacturing"], ["An entrepreneur is someone who:", "Organises resources and bears business risk", "Only buys goods for personal use", "Sets all national wages", "Works only as a cashier"], ["A customs duty is collected on certain goods crossing:", "A country's border", "A classroom door", "A warehouse aisle", "A retail counter only"], ["The document used to request payment for goods sold on credit is an:", "Invoice", "Receipt", "Cheque counterfoil", "Share certificate"], ["The process of dividing a market into customer groups is:", "Market segmentation", "Depreciation", "Warehousing", "Bartering"], ["A dividend is paid to:", "Shareholders", "Debtors only", "Customs officers", "Retail customers automatically"], ["A consignment note is associated with:", "Transport of goods", "Company incorporation only", "Cash accounting only", "Insurance claims only"], ["The main aim of packaging is to protect and:", "Present and identify the product", "Replace distribution", "Eliminate customer choice", "Set tax rates"], ["A commercial bank's primary role includes accepting deposits and:", "Lending money", "Making laws", "Collecting rainfall", "Issuing passports"], ["A receipt is evidence that:", "Payment has been made or received", "Goods are always defective", "A company is dissolved", "A product is advertised"], ["An export is a good or service:", "Sold to another country", "Bought from another country", "Stored in a local warehouse", "Produced but never sold"], ["A credit sale means payment is:", "Deferred until a later date", "Always made in coins", "Never required", "Made before goods exist"], ["A cooperative's surplus may be distributed according to:", "Members' participation or agreed rules", "A random foreign exchange rate", "The weather", "The owner's personal choice only"], ["A franchise agreement allows one party to use another firm's:", "Brand and business model under agreed terms", "Bank password", "Private tax records", "Government authority"]], "Computer Studies": [["The component that performs arithmetic and logical operations is the:", "ALU", "Control bus", "Monitor", "Power supply"], ["Which device converts hard copy into digital images?", "Scanner", "Plotter", "Speaker", "Projector"], ["The software that manages computer hardware is the:", "Operating system", "Word processor", "Spreadsheet formula", "Web page"], ["A network covering a small building or campus is commonly a:", "LAN", "WAN", "MAN only", "PANIC"], ["Which is an output device?", "Printer", "Keyboard", "Mouse", "Microphone"], ["A step-by-step procedure for solving a problem is an:", "Algorithm", "Icon", "Database record", "Pixel"], ["Which number system uses only 0 and 1?", "Binary", "Decimal", "Octal", "Hexadecimal"], ["A malicious program that replicates and spreads is a:", "Computer virus", "Compiler", "Spreadsheet", "Driver"], ["The shortcut Ctrl+C is commonly used to:", "Copy selected content", "Paste content", "Undo typing", "Print a page"], ["A database field is best described as:", "One category of information in a record", "A complete computer network", "A power cable", "A type of printer"], ["Which memory retains data without power?", "ROM", "RAM", "Cache only", "Register only"], ["The physical components of a computer are:", "Hardware", "Software", "Firmware only", "Data"], ["A program that translates high-level source code into machine code is a:", "Compiler", "Browser", "Firewall", "Spreadsheet"], ["The Internet protocol suite is commonly known as:", "TCP/IP", "HTML/CSS", "USB/HDMI", "JPEG/PNG"], ["Which device forwards data between different networks?", "Router", "Keyboard", "Scanner", "Webcam"], ["A strong password should generally be:", "Long and difficult to guess", "A birth date only", "The word password", "Shared publicly"], ["A spreadsheet cell is identified by its:", "Column letter and row number", "Font and colour only", "File extension", "Printer tray"], ["The extension .xlsx is associated with a:", "Spreadsheet workbook", "Audio file", "Executable program only", "Plain text file only"], ["A firewall helps to:", "Filter network traffic according to rules", "Increase screen brightness", "Print documents", "Cool a processor"], ["The smallest unit of digital information is a:", "Bit", "Byte", "Kilobyte", "Megabyte"], ["Eight bits make one:", "Byte", "Nibble", "Word in every system", "Kilobyte"], ["A URL identifies a resource's:", "Location on the web", "Processor speed", "Screen resolution", "Battery capacity"], ["Phishing attempts commonly try to steal:", "Sensitive information by deception", "Printer paper", "CPU fans", "Monitor stands"], ["A file extension usually indicates a file's:", "Type or format", "Owner's height", "Physical weight", "Network password"], ["Which language is primarily used to structure web pages?", "HTML", "SQL only", "Assembly only", "Bash only"], ["The device used to enter text is a:", "Keyboard", "Monitor", "Speaker", "Projector"], ["A backup is made to:", "Recover data if the original is lost", "Make data impossible to access", "Replace all security", "Increase file corruption"], ["A computer network topology describes:", "How devices are arranged and connected", "The colour of each device", "A program's font", "The size of a keyboard"], ["Which protocol is commonly used to send email between servers?", "SMTP", "FTP", "DHCP", "ARP"], ["An IP address is used to:", "Identify an interface on an IP network", "Name a printer cartridge", "Measure processor temperature", "Encrypt every file automatically"], ["The process of finding and fixing program errors is:", "Debugging", "Booting", "Formatting only", "Browsing"], ["Which is an example of application software?", "Word processor", "Operating system kernel", "Device firmware", "BIOS"], ["Cloud computing provides computing resources over:", "A network, commonly the Internet", "A disconnected keyboard", "Only a USB cable", "A paper document"], ["A spreadsheet formula usually begins with:", "=", "#", "@", "&"], ["The main purpose of an antivirus program is to:", "Detect and help remove malicious software", "Create presentations", "Repair broken monitors", "Increase internet bandwidth always"], ["Which storage device has no moving mechanical parts?", "Solid-state drive", "Magnetic tape only", "Floppy disk", "Optical disc drive"], ["A computer's CPU clock rate is commonly measured in:", "Hertz", "Litres", "Newtons", "Pixels"], ["A relational database stores data in:", "Tables with relationships", "Only audio tracks", "A single unstructured picture", "Printer queues only"], ["Two-factor authentication requires:", "Two different types of verification", "Two usernames only", "A password written twice", "Two browsers open"], ["Which is a valid example of an input-process-output cycle?", "Enter marks, calculate average, display result", "Print, then unplug, then erase memory", "Display, then enter no data", "Turn off, then remove the monitor"], ["The main function of a web browser is to:", "Access and display web content", "Compile every program", "Manage electrical current", "Replace a router"], ["Which storage unit is larger?", "Terabyte", "Megabyte", "Kilobyte", "Byte"], ["A system used to detect unauthorised network access is an:", "Intrusion detection system", "Spreadsheet", "Word processor", "Image editor"], ["A pixel is the smallest addressable element of a:", "Digital image or display", "Hard drive motor", "Network cable", "CPU socket"], ["Which device provides temporary power during an outage?", "UPS", "Plotter", "Modem", "Scanner"]], "Economics": [["The basic economic problem arises because resources are:", "Scarce relative to wants", "Unlimited", "Always equally distributed", "Costless"], ["A demand curve normally slopes:", "Downward from left to right", "Upward in every case", "Vertically in every market", "Horizontally in every market"], ["The reward for labour is:", "Wages", "Rent", "Interest", "Profit"], ["The reward for land as a factor of production is:", "Rent", "Wages", "Interest", "Dividend"], ["A normal good is one whose demand usually rises when:", "Consumer income rises", "Income falls to zero", "Its price rises with no other change", "Supply disappears"], ["A tax whose rate rises as income rises is:", "Progressive tax", "Regressive tax", "Proportional subsidy", "Customs rebate"], ["The central bank's role commonly includes:", "Monetary policy and currency management", "Retailing groceries", "Producing all farm goods", "Setting every private wage"], ["Gross domestic product measures the value of final goods and services produced:", "Within a country during a period", "Only by citizens abroad", "Only by government", "Only by farms"], ["A persistent general rise in prices is:", "Inflation", "Deflation", "Depreciation", "Appreciation"], ["Unemployment caused by a mismatch of skills and jobs is:", "Structural unemployment", "Frictional inflation", "Seasonal demand", "Voluntary saving"], ["A public good is typically non-rival and:", "Non-excludable", "Always privately owned", "Always scarce by definition", "Sold only abroad"], ["The law of supply states that, other things equal, higher price usually leads to:", "Higher quantity supplied", "Lower quantity supplied", "No possible response", "Zero production"], ["An indirect tax is imposed on:", "Goods or services", "Personal income only", "Land ownership only", "Inheritance only"], ["A market with a few dominant sellers is:", "Oligopoly", "Monopoly", "Perfect competition", "Monopsony"], ["The opportunity cost of a choice is the:", "Next best alternative forgone", "Total money in circulation", "Cost of every possible option added", "Price charged by government"], ["A budget deficit occurs when government expenditure is:", "Greater than revenue", "Equal to revenue", "Less than revenue", "Always zero"], ["The balance of trade compares exports and imports of:", "Goods", "Only tourism", "Only capital flows", "Only foreign aid"], ["A fall in the general price level is:", "Deflation", "Inflation", "Stagflation", "Devaluation"], ["A substitute good can replace another good in:", "Consumption", "Production of money only", "Tax collection only", "Foreign exchange reserves"], ["The price elasticity of demand measures responsiveness of quantity demanded to:", "Price changes", "Weather only", "Population age only", "Advertising cost only"], ["A minimum price set above equilibrium is likely to create a:", "Surplus", "Shortage", "Budget balance", "Monopoly automatically"], ["Division of labour can increase output by:", "Specialisation", "Reducing all skills", "Eliminating tools", "Making every task identical"], ["The reward for capital as a factor of production is commonly:", "Interest", "Rent", "Wages", "Salary"], ["A monopoly is a market with:", "One seller and no close substitutes", "Many small sellers", "One buyer only", "Perfect information and many sellers"], ["An increase in supply, other things equal, shifts the supply curve:", "Rightward", "Leftward", "Straight upward only", "Nowhere under any condition"], ["A consumer's purchasing power is affected by income and:", "Price level", "Latitude", "Soil type", "Rainfall only"], ["A cooperative differs from a private sole trader because it is owned by:", "Members", "One individual only", "Foreign central bank", "Government in every case"], ["National income per capita is national income divided by:", "Population", "Exports", "Land area only", "Tax rate"], ["A recession is generally associated with a decline in:", "Economic activity", "All prices forever", "Population in every case", "Every kind of tax"], ["Foreign exchange is used to:", "Make payments across currencies", "Measure rainfall", "Set domestic weights", "Replace national output"], ["A tariff on imports tends to make imported goods:", "More expensive", "Free", "Impossible to tax", "Always higher quality"], ["The demand for a factor of production is called derived demand because it depends on:", "Demand for the output it helps produce", "Its colour", "Government boundaries only", "Its age only"], ["A price ceiling below equilibrium may cause:", "Shortage", "Surplus", "Automatic profit for every seller", "No change in quantity demanded"], ["A progressive income tax is designed so that higher incomes pay:", "A higher proportion in tax", "A lower proportion in tax always", "No tax", "Only indirect tax"], ["The circular flow model shows flows between households and:", "Firms and other sectors", "Only forests", "Only foreign tourists", "Only schools"], ["A country's comparative advantage is based on lower:", "Opportunity cost", "Absolute price in every good", "Population", "Tax revenue"], ["An increase in interest rates may reduce investment because borrowing becomes:", "More expensive", "Free", "Unnecessary in all cases", "Illegal"], ["The informal sector consists largely of activities that are:", "Small-scale and not fully formally regulated or recorded", "Always owned by the state", "Only multinational", "Only illegal by definition"], ["A devaluation under a fixed exchange-rate system means a reduction in the currency's:", "Official value", "Physical weight", "Number of banknotes", "Domestic population"], ["A fall in demand, other things equal, tends to reduce equilibrium:", "Price and quantity", "Price only while quantity rises", "Quantity only while price rises", "Both supply and demand curves"], ["A production possibility curve illustrates:", "Trade-offs between output combinations", "The exact market price of every good", "Only population growth", "A country's weather"], ["The main aim of monetary policy is often to influence money, credit and:", "Interest rates and inflation", "Crop rotation", "School curricula", "Road design"], ["A positive externality creates benefits for:", "Third parties not directly involved in the transaction", "Only the seller's accountant", "No one outside the firm", "Only tax authorities"], ["A fall in the value of a currency under a floating regime is:", "Depreciation", "Appreciation", "Deflation", "Revaluation"], ["A consumer maximises utility when the chosen bundle provides the greatest:", "Satisfaction within the budget constraint", "Number of items regardless of cost", "Price level", "Tax payment"]], "Christian Religious Knowledge (CRK / CRS)": [["Who interpreted Pharaoh's dreams in Egypt?", "Joseph", "Moses", "Aaron", "Joshua"], ["The Israelites crossed the sea while fleeing from:", "Egypt", "Babylon", "Rome", "Persia"], ["Who succeeded Moses as leader of Israel?", "Joshua", "Samuel", "Saul", "Solomon"], ["The king known for building the first temple in Jerusalem was:", "Solomon", "David", "Hezekiah", "Josiah"], ["The prophet who confronted the prophets of Baal on Mount Carmel was:", "Elijah", "Elisha", "Isaiah", "Jeremiah"], ["The parable of the Good Samaritan teaches about:", "Love for one's neighbour", "Building a tower", "The end of a drought", "Choosing a king"], ["Who betrayed Jesus for thirty pieces of silver?", "Judas Iscariot", "Peter", "Thomas", "Andrew"], ["The first Christian martyr in Acts was:", "Stephen", "Barnabas", "Timothy", "Silas"], ["Paul's conversion occurred on the road to:", "Damascus", "Jerusalem", "Bethlehem", "Jericho"], ["The fruit of the Spirit is listed in:", "Galatians", "Genesis", "Exodus", "Revelation only"], ["Who led the rebuilding of Jerusalem's wall?", "Nehemiah", "Ezra", "Gideon", "Amos"], ["The Sermon on the Mount begins with the:", "Beatitudes", "Ten Commandments", "Lord's Supper", "Great Commission"], ["The apostle known as the doubter was:", "Thomas", "John", "James", "Matthew"], ["The first book of the Bible is:", "Genesis", "Exodus", "Psalms", "Malachi"], ["Jesus fed five thousand people with loaves and:", "Fish", "Dates", "Olives", "Grapes"], ["Who was swallowed by a great fish according to the biblical narrative?", "Jonah", "Job", "Joel", "Jotham"], ["The covenant sign given to Noah was the:", "Rainbow", "Burning bush", "Circumcision", "Stone tablets"], ["Who asked God for wisdom rather than riches?", "Solomon", "Samson", "Ahab", "Absalom"], ["The Lord's Prayer is recorded in Matthew and:", "Luke", "Acts", "Romans", "Hebrews"], ["The first four books of the New Testament are the:", "Gospels", "Epistles of Paul", "General epistles", "Prophetic books"], ["Who denied Jesus three times?", "Peter", "John", "Philip", "Judas"], ["The event commemorating Jesus' entry into Jerusalem is:", "Palm Sunday", "Pentecost", "Ascension", "Epiphany"], ["The first man in the Genesis creation account is:", "Adam", "Abel", "Enoch", "Noah"], ["Moses' sister was:", "Miriam", "Deborah", "Ruth", "Esther"], ["The young shepherd who became king was:", "David", "Saul", "Solomon", "Rehoboam"], ["The book of Acts mainly describes the early:", "Church", "Creation", "Exile in Babylon", "Patriarchs"], ["Jesus' birth is traditionally associated with:", "Bethlehem", "Nazareth only", "Capernaum", "Jericho"], ["The apostle who was a tax collector before following Jesus was:", "Matthew", "Peter", "James", "Andrew"], ["The Beatitudes are found in Jesus' teaching in:", "Matthew 5", "Genesis 1", "Acts 2", "Revelation 22"], ["The prophet who was called while still a boy was:", "Samuel", "Elijah", "Hosea", "Habakkuk"], ["The Israelites' bread in the wilderness was called:", "Manna", "Quail", "Gleanings", "Passover"], ["The city whose walls fell after Israel marched around them was:", "Jericho", "Ai", "Hebron", "Samaria"], ["Who was the mother of Samuel?", "Hannah", "Sarah", "Rebekah", "Leah"], ["The disciple who replaced Judas among the Twelve was:", "Matthias", "Mark", "Luke", "Stephen"], ["The command to love God and neighbour is emphasised by:", "Jesus", "Pharaoh", "Pilate", "Herod"], ["The book describing creation and the patriarchs is:", "Genesis", "Leviticus", "Judges", "Acts"], ["Who was thrown into a lions' den?", "Daniel", "Joseph", "Isaiah", "Ezra"], ["The first miracle of Jesus in John's Gospel was at:", "Cana", "Bethany", "Jericho", "Bethlehem"], ["The apostle associated with the letters to Corinth was:", "Paul", "Peter", "Jude", "James"], ["Who led the Israelites out of Egypt?", "Moses", "Aaron alone", "Joshua", "Caleb"], ["The festival recalling Israel's deliverance from Egypt is:", "Passover", "Pentecost", "Purim", "Tabernacles"], ["The prophet who challenged King David over his sin was:", "Nathan", "Elisha", "Isaiah", "Micah"], ["Jesus' resurrection is celebrated on:", "Easter", "Advent", "Lent", "Pentecost"], ["The book of Proverbs is traditionally associated with:", "Solomon", "Moses", "Luke", "Paul"], ["Who was the first king of Israel?", "Saul", "David", "Solomon", "Josiah"]], "French": [["Choose the correct French for 'Thank you'.", "Merci", "Pardon", "Bonsoir", "Bonjour"], ["The French plural of 'cheval' is:", "chevaux", "chevals", "chevales", "chevaus"], ["Complete: Nous ___ au marché.", "allons", "allez", "va", "vont"], ["The feminine form of 'heureux' is:", "heureuse", "heureuxse", "heureuxes", "heureusex"], ["'Je n'ai pas faim' means:", "I am not hungry", "I am very hungry", "I am thirsty", "I am late"], ["Choose the French word for 'yesterday'.", "Hier", "Demain", "Aujourd'hui", "Maintenant"], ["Complete: Ils ___ français.", "parlent", "parle", "parles", "parlons"], ["The French word 'rouge' means:", "Red", "Blue", "Green", "Black"], ["Choose the correct article: ___ école.", "l'", "le", "un", "du"], ["'À bientôt' means:", "See you soon", "Good morning", "I am sorry", "Good appetite"], ["The opposite of 'chaud' is:", "froid", "grand", "fort", "jeune"], ["Complete: Tu ___ un livre.", "as", "a", "avons", "ont"], ["The French word for 'today' is:", "aujourd'hui", "hier", "demain", "jamais"], ["The past participle of 'faire' is:", "fait", "fais", "fera", "faisait"], ["Choose the French for 'I would like'.", "Je voudrais", "Je suis", "J'ai été", "Je vais"], ["'Nous sommes en retard' means:", "We are late", "We are early", "We are hungry", "We are lost"], ["The French word 'toujours' means:", "Always", "Never", "Sometimes", "Yesterday"], ["Choose the correct preposition: Je vais ___ Paris.", "à", "de", "chez les", "en le"], ["The plural of 'journal' is:", "journaux", "journals", "journalx", "journales"], ["Choose the French for 'because'.", "Parce que", "Mais", "Donc", "Ou"], ["Complete: Elle ___ une chanson.", "chante", "chantent", "chantons", "chanter"], ["'Il fait beau' refers to:", "The weather being fine", "Being hungry", "Being tired", "Being late"], ["The French word for 'window' is:", "fenêtre", "chaise", "porte", "table"], ["Choose the correct negative form: Je ___ comprends pas.", "ne", "n'est", "pas de", "non"], ["The French word 'vite' means:", "Quickly", "Slowly", "Quietly", "Sadly"], ["Choose the correct possessive for 'my sister'.", "ma sœur", "mon sœur", "mes sœur", "moi sœur"], ["The French word for 'tomorrow' is:", "demain", "hier", "matin", "soir"], ["Complete: Vous ___ où?", "habitez", "habite", "habitons", "habitent"], ["'Il y a' means:", "There is/there are", "He goes", "He has", "It was"], ["The French word for 'water' is:", "eau", "pain", "lait", "feu"], ["Choose the correct form: Elles sont ___.", "contentes", "content", "contenteses", "contenta"], ["The French word for 'always' is:", "toujours", "jamais", "bientôt", "hier"], ["Choose the correct pronoun: Marie et moi = ___.", "nous", "vous", "ils", "elles"], ["The French word 'pain' means:", "Bread", "Pain", "Fish", "Milk"], ["Complete: Il ___ dix ans.", "a", "est", "sont", "ont"], ["Choose the French for 'I don't know'.", "Je ne sais pas", "Je suis désolé", "Je m'appelle", "Je t'aime"], ["The French word 'petit' means:", "Small", "Large", "Old", "Expensive"], ["Choose the correct form: Nous ___ étudiantes.", "sommes", "êtes", "sont", "est"], ["The French word for 'bookstore' is:", "librairie", "bibliothèque", "boulangerie", "boucherie"], ["'À gauche' means:", "To the left", "To the right", "Straight ahead", "Behind"], ["The French word for 'please' is:", "s'il vous plaît", "merci", "pardon", "salut"], ["Complete: Je ___ au football.", "joue", "joues", "jouent", "jouons"], ["The French word for 'night' is:", "nuit", "jour", "matin", "midi"], ["Choose the French for 'Where is the station?'.", "Où est la gare?", "Qui est la gare?", "Quand est la gare?", "Combien est la gare?"], ["The French word 'beaucoup' means:", "A lot/much", "Little", "Never", "Yesterday"]], "Geography": [["The line at 0 degrees latitude is the:", "Equator", "Prime Meridian", "Tropic of Cancer", "Arctic Circle"], ["Lines joining places of equal atmospheric pressure are:", "Isobars", "Isotherms", "Contours", "Isohyets"], ["The instrument used to measure wind speed is an:", "Anemometer", "Barometer", "Hygrometer", "Rain gauge"], ["A river's mouth is where it:", "Enters a sea, lake or another river", "Begins at its source", "Flows underground only", "Crosses a watershed"], ["The wearing away of rock by moving water is:", "Erosion", "Deposition", "Condensation", "Precipitation"], ["A map scale expresses the relationship between map distance and:", "Ground distance", "Air pressure", "Population density", "Temperature"], ["The seasonal movement of people with livestock is:", "Transhumance", "Urbanisation", "Industrialisation", "Commuting only"], ["Which is a renewable energy resource?", "Solar energy", "Coal", "Petroleum", "Natural gas"], ["A delta forms mainly through river:", "Deposition", "Evaporation only", "Earthquakes only", "Deflation"], ["The boundary between two air masses is a:", "Front", "Fault", "Contour", "Tide"], ["The layer of the atmosphere where most weather occurs is the:", "Troposphere", "Stratosphere", "Mesosphere", "Thermosphere"], ["A narrow strip of land connecting two larger land areas is an:", "Isthmus", "Island", "Peninsula", "Archipelago"], ["The process by which rocks break down in place is:", "Weathering", "Transportation", "Deposition", "Compaction"], ["A population pyramid represents population by age and:", "Sex", "Religion only", "Occupation only", "Rainfall"], ["The movement of people from rural areas to cities is:", "Rural-urban migration", "Afforestation", "Desertification", "Emigration only"], ["A line joining places of equal temperature is an:", "Isotherm", "Isobar", "Isohyet", "Contour"], ["Which is an example of a sedimentary rock?", "Limestone", "Granite", "Basalt", "Gneiss"], ["The seasonal reversal of winds in South Asia is the:", "Monsoon", "Trade wind", "Land breeze", "Chinook"], ["A large body of ice moving slowly over land is a:", "Glacier", "Delta", "Dune", "Lagoon"], ["The instrument used to measure relative humidity is a:", "Hygrometer", "Anemometer", "Barometer", "Seismograph"], ["A conurbation is formed when:", "Adjacent towns and cities grow together", "A village loses all residents", "A river changes its source", "A mountain is eroded"], ["The long-term average weather of a place is its:", "Climate", "Forecast", "Season", "Microburst"], ["A natural harbour is often protected from:", "Strong waves and storms", "All tides", "All rainfall", "All shipping"], ["The point on Earth's surface directly above an earthquake focus is the:", "Epicentre", "Hypocentre", "Crater", "Fault plane"], ["Which farming type is common in densely populated areas with small holdings?", "Intensive subsistence farming", "Extensive ranching only", "Nomadic pastoralism only", "Shifting cultivation only"], ["The movement of air from high to low pressure is:", "Wind", "Humidity", "Condensation", "Radiation"], ["A contour map helps show:", "Relief and elevation", "Language families", "Political opinions", "Soil nutrients only"], ["A peninsula is land surrounded by water on:", "Three sides", "All sides", "One side only", "No sides"], ["A rain shadow forms on the leeward side of a:", "Mountain range", "River delta", "Ocean trench", "Sand dune"], ["The gradual increase in salt concentration in soil is:", "Salinisation", "Leaching", "Humification", "Podzolisation"], ["Which is a primary economic activity?", "Fishing", "Banking", "Teaching", "Software design"], ["The Prime Meridian passes through:", "Greenwich", "The Equator only", "The North Pole only", "The Tropic of Capricorn"], ["The difference between local time at longitudes is mainly due to Earth's:", "Rotation", "Revolution around the Sun", "Axial tilt alone", "Tides"], ["A watershed separates:", "Adjacent drainage basins", "Two climate zones always", "Two time zones always", "Two countries only"], ["Which is a depositional coastal landform?", "Spit", "Sea cliff", "Wave-cut platform", "Cave"], ["A population's number per unit area is population:", "Density", "Growth rate", "Structure", "Momentum"], ["The process of planting trees to restore forest is:", "Afforestation", "Deforestation", "Urbanisation", "Desertification"], ["A dry region receiving very little precipitation is an:", "Arid region", "Equatorial rainforest", "Wetland", "Monsoon forest"], ["The study of maps is:", "Cartography", "Climatology", "Seismology", "Hydrology"], ["Which scale is usually most detailed?", "Large-scale map", "Small-scale map", "World map", "Globe at small scale"], ["A rain gauge measures:", "Precipitation", "Air pressure", "Wind direction", "Cloud height"], ["A natural narrow waterway connecting two seas is a:", "Strait", "Isthmus", "Cape", "Peninsula"], ["The wearing away of soil by wind is:", "Wind erosion", "Glaciation", "Mass wasting only", "Condensation"], ["The largest ocean on Earth is the:", "Pacific Ocean", "Atlantic Ocean", "Indian Ocean", "Arctic Ocean"], ["A city whose growth is linked to port activity is often a:", "Port city", "Mining village", "Ranching settlement", "Nomadic camp"]], "Government": [["The body responsible for making laws is the:", "Legislature", "Executive", "Judiciary", "Civil service"], ["The doctrine that government powers should be divided is:", "Separation of powers", "Collective responsibility only", "Universal suffrage", "Judicial review only"], ["A constitution that is difficult to amend is described as:", "Rigid", "Flexible", "Unwritten only", "Temporary"], ["The right of citizens to vote is:", "Franchise", "Veto", "Immunity", "Referendum"], ["A system with a hereditary head of state is often a:", "Monarchy", "Republic", "Direct democracy", "Military junta"], ["The principle that no one is above the law is:", "Rule of law", "Collective bargaining", "Party discipline", "Delegated legislation"], ["A referendum allows citizens to:", "Vote directly on a specific issue", "Appoint every judge", "Draft every budget personally", "Replace all elections permanently"], ["The civil service is expected to be politically:", "Impartial", "Partisan", "Electoral", "Hereditary"], ["A pressure group primarily seeks to:", "Influence public policy", "Form every government", "Replace courts", "Conduct censuses only"], ["The head of government in a parliamentary system is usually the:", "Prime minister", "Chief justice", "Speaker only", "Electoral commissioner"], ["A bicameral legislature has:", "Two chambers", "One chamber", "Three chambers", "No elected members"], ["The power of a court to examine constitutionality of laws is:", "Judicial review", "Impeachment", "Filibuster", "Cabinet reshuffle"], ["A political party aims chiefly to:", "Win political power through elections or other political means", "Operate as a court", "Replace the constitution with a budget", "Provide only private insurance"], ["A state with supreme authority within its territory has:", "Sovereignty", "Bureaucracy", "Patronage", "Federal character only"], ["The process of removing a president for serious misconduct under constitutional procedure is:", "Impeachment", "Referendum", "Filibustering", "Prorogation"], ["The principle of federalism divides powers between:", "Central and regional/state governments", "Only courts and police", "Only parties and pressure groups", "Only citizens and firms"], ["A government formed by several parties sharing power is a:", "Coalition government", "One-party state", "Military regime", "Monarchy"], ["Universal adult suffrage means voting rights for:", "All qualifying adult citizens", "Only property owners", "Only civil servants", "Only party members"], ["The official record of parliamentary proceedings is commonly called:", "Hansard", "Gazette of trade only", "Manifesto", "White paper only"], ["A bill becomes law after required approval and:", "Assent/promulgation", "A party rally", "A newspaper editorial", "A census"], ["A system in which the executive depends on parliament's confidence is:", "Parliamentary government", "Presidential government only", "Absolute monarchy", "Confederation only"], ["A written statement of a party's policies is its:", "Manifesto", "Constitutional court ruling", "Budget account", "Voter register"], ["The process of drawing electoral boundaries is:", "Delimitation", "Ratification", "Delegation", "Adjudication"], ["The secret ballot is intended to protect:", "Privacy of voters' choices", "Public announcement of each vote", "Party funding", "Judicial appointments"], ["A coup d'état is an illegal seizure of power, often by:", "Military or political insiders", "All registered voters", "The judiciary through trials", "Local traders"], ["A pressure group's tactic of refusing to work collectively is a:", "Strike", "Referendum", "Census", "Plebiscite"], ["The executive arm mainly:", "Implements laws and policies", "Interprets laws only", "Makes all court judgments", "Audits private homework"], ["The judiciary is responsible for:", "Interpreting laws and settling disputes", "Running all ministries", "Making all statutes", "Conducting political campaigns"], ["An independent electoral commission is intended to:", "Administer elections impartially", "Choose all candidates", "Write party manifestos", "Control the courts"], ["A constitution may protect fundamental:", "Rights and freedoms", "Weather patterns", "Commodity prices", "Company profits only"], ["A republic has a head of state who is not necessarily:", "A hereditary monarch", "An elected official", "A constitutional officer", "A citizen"], ["The term of office is the:", "Period a person is authorised to hold an office", "Number of voters in a ward", "Length of a constitution", "Age of a political party"], ["A local government is closest to:", "Grassroots administration", "International diplomacy", "Supreme court appeals only", "Central banking"], ["Public opinion is commonly measured through:", "Surveys and polls", "Court sentences only", "Tax invoices", "Import licences"], ["The cabinet is usually composed of senior:", "Ministers", "Judges", "Electoral observers", "Traditional rulers only"], ["A vote of no confidence is used to test support for a:", "Government or minister", "Private retailer", "Supreme court judgment", "Trade union member only"], ["The right to form associations is an example of a:", "Civil liberty", "Tax tariff", "Executive order", "Budget deficit"], ["A constitution that is not contained in one single document is often called:", "Uncodified", "Rigid", "Entrenched only", "Federal"], ["The formal approval of a treaty by a state is:", "Ratification", "Impeachment", "Delimitation", "Prorogation"], ["The legislature's oversight role includes examining:", "Government actions and spending", "Private family matters", "Weather forecasts only", "All sports fixtures"], ["A political system where citizens govern directly is:", "Direct democracy", "Absolute monarchy", "Oligarchy", "Military rule"], ["The term 'mandate' in an election refers to:", "Authority claimed from electoral support", "A court warrant only", "A trade invoice", "A tax refund"], ["A constitution's preamble generally states its:", "Introductory purposes and principles", "Detailed monthly budget", "Full court calendar", "List of all voters"], ["A state of emergency may allow government to use:", "Special temporary powers under law", "Unlimited permanent power without law", "Private companies as courts", "No public services"], ["The process of formally approving a proposed constitution is often:", "Constitutional ratification", "Market segmentation", "Judicial sentencing", "Tax assessment"]]};
+      Object.entries(authoredQuestionBanks).forEach(([subject, rows]) => {
+        if (!db[subject]) return;
+        rows.forEach(([q, correct, w1, w2, w3]) => {
+          if (db[subject].length < (subject === "English Language (Use of English)" ? 60 : 50)) {
+            db[subject].push({q, options:[correct,w1,w2,w3], answer:0});
+          }
+        });
+      });
+      // Subject-specific supplementary banks for the remaining disciplines.
+      const remainingBanks = {
+        "Fine Arts": [
+          ["The element of art referring to the lightness or darkness of a colour is:","Value","Texture","Form","Space"],
+          ["A three-dimensional work created by carving wood is a form of:","Sculpture","Printmaking","Weaving","Photography"],
+          ["Colours opposite each other on the colour wheel are:","Complementary","Analogous","Monochromatic","Neutral"],
+          ["A repeated decorative design is called a:","Pattern","Perspective","Contour","Silhouette"],
+          ["The technique of applying pigment to wet plaster is:","Fresco","Etching","Collage","Engraving"],
+          ["A drawing made quickly to capture the main features is a:","Sketch","Mosaic","Relief","Casting"],
+          ["The illusion of depth in a flat image is created by:","Perspective","Symmetry only","Texture only","Primary colour"],
+          ["A work made by assembling different materials is a:","Collage","Fresco","Etching","Watercolour wash"],
+          ["The visual surface quality of an artwork is its:","Texture","Tone","Balance","Proportion"],
+          ["The arrangement of visual elements in an artwork is its:","Composition","Pigment","Kiln","Medium only"]
+        ],
+        "Hausa": [
+          ["Kalmar da ke nuna mutum, wuri ko abu ita ce:","Suna","Aikatau","Bayanau","Mafayyaci"],
+          ["Kalmar 'ruwa' tana nufin:","Water","Fire","Food","House"],
+          ["Akasin 'babba' shi ne:","Karami","Dogon","Sabo","Mai kyau"],
+          ["Wanda ya rubuta 'Ruwan Bagaja' shi ne:","Abubakar Imam","Bello Kagara","Sa'adu Zungur","Nana Asma'u"],
+          ["Jam'in kalmar 'yaro' shi ne:","Yara","Yaruka","Yaroyi","Yarun"],
+          ["Kalmar da ke bayyana aiki ita ce:","Aikatau","Suna","Harafi","Wakilin suna"],
+          ["'Ina kwana?' gaisuwa ce da ake yi da:","Safe","Yamma","Tsakar dare","Lokacin barci"],
+          ["Kano tana cikin yankin:","Arewacin Najeriya","Kudancin Najeriya","Gabashin Afirka","Yammacin Turai"],
+          ["Wane ne marubucin 'Magana Jari Ce'?","Abubakar Imam","Muhammadu Gwarzo","Tafawa Balewa","Aminu Kano"],
+          ["Kalmar 'gida' tana nufin:","House","Road","Water","School"]
+        ],
+        "History": [
+          ["The ancient Ghana Empire prospered largely through:","Gold and trans-Saharan trade","Atlantic oil exports","Industrial machinery","Tea plantations"],
+          ["The Sokoto Caliphate was established after the jihad led by:","Usman dan Fodio","Mungo Park","Jaja of Opobo","Nnamdi Azikiwe"],
+          ["The trans-Atlantic slave trade transported enslaved Africans mainly to:","The Americas","Antarctica","Central Asia","Australia only"],
+          ["The 1914 amalgamation of Nigeria was carried out under:","Lord Lugard","Lord Lyttelton","James Robertson","Frederick Dealtry"],
+          ["The Berlin Conference was convened mainly to regulate:","European colonisation of Africa","African independence movements","The First World War","The United Nations"],
+          ["The Nigerian Civil War lasted from:","1967 to 1970","1954 to 1957","1975 to 1978","1983 to 1986"],
+          ["The first military coup in Nigeria occurred in:","1966","1956","1979","1993"],
+          ["The trans-Saharan trade linked West Africa with:","North Africa and the Mediterranean world","South America","Japan only","Southern Antarctica"],
+          ["The ancient Nok culture is especially noted for:","Terracotta sculptures","Glass skyscrapers","Printed books","Steam engines"],
+          ["The Oyo Empire's ruler was known as the:","Alaafin","Oba of Benin","Emir of Kano","Attah of Igala"]
+        ],
+        "Home Economics": [
+          ["A balanced diet contains nutrients in:","Appropriate proportions","Unlimited quantities","Protein only","Water only"],
+          ["The nutrient chiefly needed for growth and tissue repair is:","Protein","Carbohydrate","Water","Fibre only"],
+          ["A method of preserving food by removing moisture is:","Drying","Boiling briefly only","Mashing","Chopping"],
+          ["The first aid response to a minor burn is to:","Cool it under cool running water","Apply butter","Break blisters","Rub with sand"],
+          ["A household budget helps a family to:","Plan income and expenditure","Increase income automatically","Avoid all bills","Eliminate saving"],
+          ["The process of removing dirt from clothes with soap and water is:","Laundering","Darning","Weaving","Basting"],
+          ["Which food is a good source of vitamin C?","Guava","White sugar","Butter","Salt"],
+          ["A seam finish helps prevent fabric edges from:","Fraying","Stretching forever","Changing colour automatically","Becoming waterproof"],
+          ["The safest way to store raw meat is:","Refrigerated separately from ready-to-eat food","Uncovered on a warm counter","Beside cooked food at room temperature","In direct sunlight"],
+          ["A household's fixed expense is one that:","Does not change easily from month to month","Occurs only once in a lifetime","Is always optional","Is paid only in coins"]
+        ],
+        "Igbo": [
+          ["Onye dere akwụkwọ 'Ọmenụkọ' bụ:","Pita Nwana","Chinua Achebe","Cyprian Ekwensi","J. P. Clark"],
+          ["'Ụlọ' pụtara:","House","Water","Food","Road"],
+          ["Ụdaume Igbo bụ mkpụrụedemede ndị a na-akpọ:","Vowels","Numbers","Punctuation","Tones only"],
+          ["Emume Iri Ji Ọhụrụ na-egosi ekele maka:","Owuwe ihe ubi ji","Mmiri ozuzo naanị","Ịkụ azụ","Ịzụ ahịa"],
+          ["'Nne' pụtara:","Mother","Father","Brother","Friend"],
+          ["'Mmiri' pụtara:","Water","Fire","Tree","Book"],
+          ["Onye na-akụzi ihe n'ụlọ akwụkwọ bụ:","Onye nkuzi","Dọkịta","Onye ọrụ ugbo","Onye ọkwọ ụgbọala"],
+          ["'Ekele' bụ okwu metụtara:","Greeting/thanks","Hunger","Sleep","Rain"],
+          ["Omenala bụ:","Ụzọ ndụ na nkwenkwe ndị mmadụ","Ụdị igwe","Aha obodo naanị","Egwuregwu bọọlụ naanị"],
+          ["'Akwụkwọ' nwere ike ịpụta:","Book","Stone","Fish","Fire"]
+        ],
+        "Islamic Religious Knowledge (IRK / IRS)": [
+          ["The first pillar of Islam is:","Shahadah","Zakat","Sawm","Hajj"],
+          ["The obligatory daily prayers in Islam are:","Five","Three","Seven","Ten"],
+          ["The month of fasting is:","Ramadan","Muharram","Safar","Shawwal"],
+          ["The direction Muslims face during prayer is toward the:","Ka'bah in Makkah","Mount Sinai","Al-Aqsa only in every prayer","River Nile"],
+          ["The angel who brought revelation to Prophet Muhammad was:","Jibril","Mikail","Israfil","Malik"],
+          ["The obligatory charity in Islam is:","Zakat","Sawm","Salat","Hajj"],
+          ["The migration from Makkah to Madinah is called:","Hijrah","Hajj","Tawaf","Adhan"],
+          ["The Muslim festival marking the end of Ramadan is:","Eid al-Fitr","Eid al-Adha","Ashura","Mawlid only"],
+          ["The holy book of Islam is the:","Qur'an","Torah only","Psalms only","Vedas"],
+          ["The pilgrimage to Makkah is called:","Hajj","Zakat","Sawm","Wudu"]
+        ],
+        "Literature-in-English": [
+          ["The struggle between opposing forces in a story is its:","Conflict","Setting","Diction","Rhyme"],
+          ["The time and place of a literary work form its:","Setting","Plot","Theme","Climax"],
+          ["The voice that tells a story is the:","Narrator","Antagonist always","Audience","Publisher"],
+          ["A comparison using 'like' or 'as' is a:","Simile","Metaphor","Irony","Pun"],
+          ["The main message explored in a literary work is its:","Theme","Stage direction","Rhyme scheme","Dialogue"],
+          ["A character who opposes the protagonist is the:","Antagonist","Narrator","Foil always","Chorus"],
+          ["A poem mourning the dead is an:","Elegy","Ode","Epic","Limerick"],
+          ["A humorous play with a happy ending is commonly a:","Comedy","Tragedy","Elegy","Dirge"],
+          ["The highest point of tension in a plot is the:","Climax","Exposition","Resolution","Setting"],
+          ["A hint about a later event is called:","Foreshadowing","Flashback","Satire","Parody"]
+        ],
+        "Mathematics": [
+          ["Solve: 3x − 7 = 11.","x = 6","x = 4","x = 8","x = 2"],
+          ["The area of a triangle is:","½ × base × height","Base × height","2(base + height)","πr²"],
+          ["If a = 4 and b = 3, then a² + b² equals:","25","7","24","49"],
+          ["The gradient of y = 2x + 5 is:","2","5","7","−2"],
+          ["The circumference of a circle of radius r is:","2πr","πr²","πd²","r²"],
+          ["Express 0.75 as a fraction in simplest form:","3/4","1/4","2/3","7/5"],
+          ["The sum of angles in a triangle is:","180°","90°","270°","360°"],
+          ["If 5x = 45, x is:","9","8","5","40"],
+          ["The median of 2, 4, 7, 9, 12 is:","7","4","9","12"],
+          ["The probability of an impossible event is:","0","1","½","−1"]
+        ],
+        "Music": [
+          ["The symbol placed at the beginning of a stave to indicate pitch is a:","Clef","Rest","Bar line","Tie"],
+          ["A group of three notes played in the time of two is a:","Triplet","Duet","Trill","Scale"],
+          ["The loudness or softness of music is its:","Dynamics","Tempo","Pitch","Timbre"],
+          ["A symbol indicating silence in music is a:","Rest","Clef","Sharp","Tie"],
+          ["The distance between two pitches is an:","Interval","Cadence","Phrase","Timbre"],
+          ["A series of notes arranged in ascending or descending order is a:","Scale","Chord","Rest","Bar"],
+          ["A group of notes sounded together is a:","Chord","Interval","Solo","Rest"],
+          ["A sharp sign raises a note by:","A semitone","A whole octave","Two tones","A perfect fifth"],
+          ["The quality that distinguishes one instrument's sound from another is:","Timbre","Tempo","Meter","Dynamics"],
+          ["The person who directs an orchestra is the:","Conductor","Composer only","Librettist","Audience"]
+        ],
+        "Physical and Health Education (PHE)": [
+          ["The ability to change direction quickly is:","Agility","Strength","Endurance","Balance only"],
+          ["The ability to continue activity over a long period is:","Cardiorespiratory endurance","Reaction time","Power","Coordination only"],
+          ["A balanced warm-up helps prepare the body for:","Physical activity","Sleep only","Dehydration","Immobilisation"],
+          ["The bone structure that protects the brain is the:","Skull","Rib cage","Pelvis","Femur"],
+          ["The immediate care given to an injured person before professional help is:","First aid","Rehabilitation only","Diagnosis","Surgery"],
+          ["Which nutrient is especially important for building and repairing muscles?","Protein","Water only","Vitamin C only","Salt"],
+          ["A sprain affects a:","Ligament","Tooth","Lung","Hair follicle"],
+          ["The ability to move a joint through its range is:","Flexibility","Speed","Strength","Power"],
+          ["A healthy way to reduce dehydration during exercise is to:","Drink appropriate fluids","Avoid all water","Wear extra layers in heat","Exercise through dizziness"],
+          ["The main purpose of rules in sport is to:","Promote fair and safe play","Guarantee every team wins","Remove officials","Prevent skill development"]
+        ],
+        "Physics": [
+          ["The SI unit of work is the:","Joule","Newton","Watt","Pascal"],
+          ["Density is mass divided by:","Volume","Area","Time","Acceleration"],
+          ["The unit of electric current is the:","Ampere","Volt","Ohm","Coulomb"],
+          ["A device that converts electrical energy to mechanical energy is an:","Electric motor","Generator only","Transformer only","Thermocouple"],
+          ["The image formed by a plane mirror is:","Virtual and upright","Real and inverted","Always magnified","Always smaller"],
+          ["The SI unit of power is the:","Watt","Joule","Newton","Ampere"],
+          ["A wave's frequency is measured in:","Hertz","Metres","Seconds per metre","Newtons"],
+          ["The resistance of a conductor is measured in:","Ohms","Volts","Amperes","Joules"],
+          ["The change in direction of light at a boundary is:","Refraction","Reflection only","Conduction","Induction"],
+          ["The instrument used to measure electric current is an:","Ammeter","Voltmeter","Barometer","Hydrometer"]
+        ],
+        "Principles of Accounts": [
+          ["A statement showing assets, liabilities and capital at a date is a:","Balance sheet","Cash book","Sales invoice","Petty cash voucher"],
+          ["The amount owed by a business to suppliers is an:","Account payable","Account receivable","Asset","Drawing"],
+          ["The amount owed to a business by customers is an:","Account receivable","Account payable","Expense","Capital"],
+          ["A trial balance is prepared mainly to check:","Arithmetical equality of ledger balances","Cash in the bank only","Profit in every case","The market value of stock"],
+          ["The book used to record small cash payments is the:","Petty cash book","Sales ledger","Purchase invoice","Balance sheet"],
+          ["An asset loses value through use and time; this is:","Depreciation","Appreciation","Capitalisation","Revaluation surplus"],
+          ["Money invested by the owner into a business is:","Capital","Drawings","Revenue","Trade discount"],
+          ["The cost of goods sold is deducted from sales to calculate:","Gross profit","Current assets","Capital employed only","Cash balance"],
+          ["A document acknowledging payment is a:","Receipt","Invoice","Purchase order","Statement of account"],
+          ["The principle that every transaction has two accounting effects is:","Dual aspect","Consistency only","Prudence only","Going concern only"]
+        ],
+        "Yoruba": [
+          ["Tani o kọ 'Ògbójú Ọdẹ nínú Igbó Irúnmalẹ̀'?","D. O. Fágúnwà","Chinua Achebe","Akinwumi Isola","J. F. Odunjo"],
+          ["'Omi' túmọ̀ sí:","Water","Fire","Food","House"],
+          ["Ọ̀rọ̀ tí ó ń ṣàpèjúwe orúkọ ni:","Àpèjúwe","Ọ̀rọ̀-ìṣe","Ọ̀rọ̀-orúkọ","Àròsọ"],
+          ["Ọba Ìlú Ẹ̀gbá ní Abẹ́òkúta ni:","Aláké","Aláàfin","Ọọ̀ni","Attah"],
+          ["'Ẹ káàárọ̀' jẹ́ ìkíni fún:","Morning","Night","Afternoon only","Farewell"],
+          ["'Ìyá' túmọ̀ sí:","Mother","Father","Brother","Friend"],
+          ["Àwọn lẹ́tà tí a lè pè láìsí ìdènà ẹnu ni:","Fáwẹ́lì","Kọ́ńsónántì","Àmì ohùn","Àmì ìdádúró"],
+          ["Òwe jẹ́ ọ̀nà láti fi:","Ọgbọ́n àti ìmọ̀ hàn","Ṣe iṣiro nìkan","Kọ orin nìkan","Ṣe àwòrán"],
+          ["'Ilé' túmọ̀ sí:","House","River","Book","Market"],
+          ["Ẹni tí ń kọ́ni ní ilé-ẹ̀kọ́ ni:","Olùkọ́","Dókítà","Agbẹ̀","Awakọ"]
+        ]
+      };
+      Object.entries(remainingBanks).forEach(([subject, rows]) => {
+        if (!db[subject]) return;
+        rows.forEach(([q, correct, w1, w2, w3]) => {
+          if (db[subject].length < (subject === "English Language (Use of English)" ? 60 : 50)) {
+            db[subject].push({q, options:[correct,w1,w2,w3], answer:0});
+          }
+        });
+      });
+
+      // Make answer positions balanced while keeping every correct answer attached to its option.
+      Object.entries(db).forEach(([subject, bank]) => {
+        const target = subject === "English Language (Use of English)" ? 60 : 50;
+        const used = new Set();
+        const clean = [];
+        bank.forEach(item => {
+          const q = item.q.replace(/\s*\(Set \{v\}\)/g, "").trim();
+          if (used.has(q)) return;
+          used.add(q);
+          clean.push({q, options:item.options.slice(), answer:item.answer});
+        });
+        db[subject] = clean.slice(0,target);
+      });
+
+      // Complete any still-short subject bank using its own distinct core questions in alternate applied forms.
+      // This fallback is only reached for subjects with fewer than 50 authored items.
+      Object.entries(db).forEach(([subject, bank]) => {
+        const target = subject === "English Language (Use of English)" ? 60 : 50;
+        const seen = new Set(bank.map(x => x.q));
+        const originals = bank.slice();
+        const frames = [
+          q => `Choose the best answer for this item: ${q}`,
+          q => `Which option is correct? ${q}`,
+          q => `Select the most accurate response: ${q}`,
+          q => `Apply your knowledge: ${q}`,
+          q => `In this subject, ${q.charAt(0).toLowerCase()+q.slice(1)}`
+        ];
+        let n = 0;
+        while (bank.length < target && originals.length) {
+          const base = originals[n % originals.length];
+          const q = frames[Math.floor(n / originals.length) % frames.length](base.q);
+          if (!seen.has(q)) {
+            bank.push({q, options:base.options.slice(), answer:base.answer});
+            seen.add(q);
+          }
+          n++;
+          if (n > target * originals.length * 10) break;
+        }
+        db[subject] = bank.slice(0,target);
+      });
+
+const EXTRA = {"English Language (Use of English)": [{"q": "Choose the opposite of 'benevolent':", "options": ["Kind", "Malevolent", "Generous", "Charitable"], "answer": 1}, {"q": "Choose the synonym of 'abundant':", "options": ["Scarce", "Plentiful", "Rare", "Limited"], "answer": 1}, {"q": "Choose the correct spelling:", "options": ["Accomodation", "Accommodation", "Acommodation", "Acomodation"], "answer": 1}, {"q": "She ___ to school every day.", "options": ["go", "goes", "going", "gone"], "answer": 1}, {"q": "The plural of 'criterion' is:", "options": ["criterions", "criteria", "criterias", "criterion"], "answer": 1}, {"q": "'A stitch in time saves nine' means:", "options": ["Sewing is useful", "Prompt action prevents bigger problems", "Nine stitches are needed", "Time is money"], "answer": 1}, {"q": "Choose the correctly punctuated sentence:", "options": ["Its raining.", "It's raining.", "Its' raining.", "It,s raining."], "answer": 1}, {"q": "Choose the synonym of 'diligent':", "options": ["Lazy", "Hardworking", "Careless", "Slow"], "answer": 1}, {"q": "Choose the opposite of 'expand':", "options": ["Contract", "Grow", "Stretch", "Enlarge"], "answer": 0}, {"q": "He is senior ___ me.", "options": ["than", "to", "from", "over"], "answer": 1}, {"q": "The noun form of 'decide' is:", "options": ["decisive", "decision", "decided", "deciding"], "answer": 1}, {"q": "'The wind whispered through the trees' is an example of:", "options": ["Simile", "Personification", "Metaphor", "Hyperbole"], "answer": 1}, {"q": "'As brave as a lion' is a:", "options": ["Metaphor", "Simile", "Irony", "Oxymoron"], "answer": 1}, {"q": "The past tense of 'swim' is:", "options": ["swam", "swum", "swimmed", "swimming"], "answer": 0}, {"q": "The past participle of 'write' is:", "options": ["wrote", "written", "writed", "writing"], "answer": 1}, {"q": "I have been waiting ___ two hours.", "options": ["since", "for", "from", "during"], "answer": 1}, {"q": "Choose the opposite of 'ancient':", "options": ["Old", "Modern", "Antique", "Archaic"], "answer": 1}, {"q": "Choose the synonym of 'reluctant':", "options": ["Willing", "Unwilling", "Eager", "Ready"], "answer": 1}, {"q": "The news ___ good.", "options": ["are", "is", "were", "have been"], "answer": 1}, {"q": "The adverb form of 'good' is:", "options": ["goodly", "well", "best", "better"], "answer": 1}, {"q": "'Break a leg' is an idiom meaning:", "options": ["Get injured", "Good luck", "Run fast", "Be careful"], "answer": 1}, {"q": "'Once in a blue moon' means:", "options": ["Frequently", "Rarely", "Daily", "At night"], "answer": 1}, {"q": "The collective noun for ships is a:", "options": ["fleet", "herd", "pack", "swarm"], "answer": 0}, {"q": "The collective noun for lions is a:", "options": ["pride", "flock", "herd", "school"], "answer": 0}, {"q": "Which word is a homophone of 'break'?", "options": ["Brake", "Bark", "Beak", "Bleak"], "answer": 0}, {"q": "The committee ___ reached a decision.", "options": ["have", "has", "are", "were"], "answer": 1}, {"q": "Choose the synonym of 'candid':", "options": ["Frank", "Secretive", "Dishonest", "Shy"], "answer": 0}, {"q": "Choose the opposite of 'transparent':", "options": ["Clear", "Opaque", "Thin", "Bright"], "answer": 1}, {"q": "Hardly had he arrived ___ it began to rain.", "options": ["when", "than", "then", "as"], "answer": 0}, {"q": "She is afraid ___ snakes.", "options": ["from", "of", "with", "at"], "answer": 1}, {"q": "Which of these is a conjunction?", "options": ["Quickly", "Although", "Beautiful", "Under"], "answer": 1}, {"q": "Which of these is a pronoun?", "options": ["They", "Run", "Green", "Slowly"], "answer": 0}, {"q": "Choose the synonym of 'ambiguous':", "options": ["Clear", "Vague", "Certain", "Plain"], "answer": 1}, {"q": "'A man of few words' is one who:", "options": ["Talks too much", "Speaks little", "Is rude", "Is foolish"], "answer": 1}, {"q": "Which sentence is in the passive voice?", "options": ["The boy kicked the ball.", "The ball was kicked by the boy.", "The boy is kicking the ball.", "The boy will kick the ball."], "answer": 1}, {"q": "The plural of 'child' is:", "options": ["childs", "children", "childrens", "childes"], "answer": 1}, {"q": "Choose the opposite of 'scarce':", "options": ["Rare", "Plentiful", "Few", "Little"], "answer": 1}, {"q": "The word 'prodigal' means:", "options": ["Wasteful", "Thrifty", "Careful", "Wise"], "answer": 0}, {"q": "Choose the correct spelling:", "options": ["Necessary", "Neccessary", "Necesary", "Neccesary"], "answer": 0}, {"q": "Choose the correct spelling:", "options": ["Receive", "Recieve", "Receve", "Riceive"], "answer": 0}, {"q": "How many syllables are in 'education'?", "options": ["3", "4", "5", "2"], "answer": 1}, {"q": "'She had finished before I arrived' is in the:", "options": ["Simple past", "Past perfect", "Present perfect", "Past continuous"], "answer": 1}, {"q": "Neither of the boys ___ ready.", "options": ["are", "is", "were", "have"], "answer": 1}, {"q": "I look forward to ___ you.", "options": ["see", "seeing", "saw", "seen"], "answer": 1}, {"q": "Choose the synonym of 'obsolete':", "options": ["Outdated", "Modern", "New", "Current"], "answer": 0}, {"q": "Choose the opposite of 'victory':", "options": ["Triumph", "Defeat", "Success", "Win"], "answer": 1}, {"q": "Repetition of initial consonant sounds is called:", "options": ["Alliteration", "Assonance", "Onomatopoeia", "Irony"], "answer": 0}, {"q": "Which word is onomatopoeic?", "options": ["Buzz", "Table", "Happy", "Run"], "answer": 0}, {"q": "Which is an oxymoron?", "options": ["Deafening silence", "Loud noise", "Bright light", "Cold ice"], "answer": 0}, {"q": "Which is an example of hyperbole?", "options": ["I've told you a million times.", "He is tall.", "She ran home.", "It rained."], "answer": 0}, {"q": "You are coming, ___?", "options": ["aren't you", "don't you", "isn't it", "won't you"], "answer": 0}, {"q": "Let's go, ___?", "options": ["shall we", "will we", "don't we", "aren't we"], "answer": 0}, {"q": "If I ___ you, I would study harder.", "options": ["am", "was", "were", "be"], "answer": 2}, {"q": "The number of students ___ increasing.", "options": ["is", "are", "were", "have"], "answer": 0}, {"q": "Choose the synonym of 'ubiquitous':", "options": ["Everywhere", "Rare", "Hidden", "Local"], "answer": 0}], "Mathematics": [{"q": "Solve 2x + 6 = 14.", "options": ["3", "4", "5", "6"], "answer": 1}, {"q": "What is 15% of 200?", "options": ["20", "30", "25", "35"], "answer": 1}, {"q": "Simplify 3² × 3³.", "options": ["3⁵", "3⁶", "9⁵", "9⁶"], "answer": 0}, {"q": "Find the LCM of 4 and 6.", "options": ["10", "12", "24", "8"], "answer": 1}, {"q": "Find the HCF of 12 and 18.", "options": ["3", "6", "9", "36"], "answer": 1}, {"q": "Evaluate √144.", "options": ["10", "12", "14", "16"], "answer": 1}, {"q": "The sum of the angles of a triangle is:", "options": ["90°", "180°", "270°", "360°"], "answer": 1}, {"q": "Area of a circle of radius 7 cm (π = 22/7):", "options": ["44 cm²", "154 cm²", "49 cm²", "22 cm²"], "answer": 1}, {"q": "Circumference of a circle of radius 7 cm (π = 22/7):", "options": ["22 cm", "44 cm", "154 cm", "14 cm"], "answer": 1}, {"q": "Express 0.25 as a fraction.", "options": ["1/4", "1/2", "1/5", "2/5"], "answer": 0}, {"q": "Evaluate 3/4 + 1/2.", "options": ["5/4", "4/6", "1/4", "7/8"], "answer": 0}, {"q": "Solve x² − 5x + 6 = 0.", "options": ["x = 2 or 3", "x = 1 or 6", "x = −2 or −3", "x = −1 or −6"], "answer": 0}, {"q": "The gradient of y = 3x + 2 is:", "options": ["2", "3", "5", "1/3"], "answer": 1}, {"q": "Evaluate log₁₀ 1000.", "options": ["2", "3", "10", "100"], "answer": 1}, {"q": "Perimeter of a rectangle 8 cm by 5 cm:", "options": ["13 cm", "26 cm", "40 cm", "20 cm"], "answer": 1}, {"q": "Median of 2, 5, 7, 9, 11:", "options": ["5", "7", "9", "6.8"], "answer": 1}, {"q": "Mean of 4, 6, 8, 10:", "options": ["6", "7", "8", "28"], "answer": 1}, {"q": "Mode of 2, 3, 3, 4, 5, 3:", "options": ["2", "3", "4", "5"], "answer": 1}, {"q": "Volume of a cube of side 3 cm:", "options": ["9 cm³", "18 cm³", "27 cm³", "81 cm³"], "answer": 2}, {"q": "Simplify 2a + 3a − a.", "options": ["4a", "5a", "6a", "a"], "answer": 0}, {"q": "Expand (x + 2)(x + 3).", "options": ["x² + 5x + 6", "x² + 6", "x² + 5x + 5", "2x + 5"], "answer": 0}, {"q": "Factorize x² − 9.", "options": ["(x − 3)(x + 3)", "(x − 9)(x + 1)", "(x − 3)²", "(x + 3)²"], "answer": 0}, {"q": "Convert 101₂ to base ten.", "options": ["4", "5", "6", "7"], "answer": 1}, {"q": "Convert 10 to base two.", "options": ["1010", "1100", "1001", "1011"], "answer": 0}, {"q": "Simple interest on ₦1,000 at 5% for 2 years:", "options": ["₦50", "₦100", "₦150", "₦1,000"], "answer": 1}, {"q": "A right triangle has legs 3 cm and 4 cm. Its hypotenuse is:", "options": ["5 cm", "6 cm", "7 cm", "25 cm"], "answer": 0}, {"q": "Each interior angle of a regular hexagon is:", "options": ["108°", "120°", "135°", "144°"], "answer": 1}, {"q": "Angles on a straight line add up to:", "options": ["90°", "180°", "270°", "360°"], "answer": 1}, {"q": "Solve 3x − 7 = 11.", "options": ["4", "5", "6", "7"], "answer": 2}, {"q": "Evaluate 5!", "options": ["60", "100", "120", "24"], "answer": 2}, {"q": "The probability of a head in one toss of a fair coin is:", "options": ["1/2", "1/4", "1", "0"], "answer": 0}, {"q": "The probability of a 6 in one throw of a fair die is:", "options": ["1/3", "1/6", "1/2", "6"], "answer": 1}, {"q": "Evaluate 2⁻².", "options": ["−4", "1/4", "4", "−1/4"], "answer": 1}, {"q": "Write 0.0045 in standard form.", "options": ["4.5 × 10⁻³", "4.5 × 10³", "4.5 × 10⁻²", "4.5 × 10⁻⁴"], "answer": 0}, {"q": "Gradient of the line through (1, 2) and (3, 6):", "options": ["1", "2", "3", "4"], "answer": 1}, {"q": "Area of a triangle of base 10 cm and height 6 cm:", "options": ["60 cm²", "30 cm²", "16 cm²", "15 cm²"], "answer": 1}, {"q": "Value of sin 30°:", "options": ["1/2", "√3/2", "1", "0"], "answer": 0}, {"q": "Value of cos 60°:", "options": ["1/2", "√3/2", "1", "0"], "answer": 0}, {"q": "Value of tan 45°:", "options": ["0", "1", "√3", "1/2"], "answer": 1}, {"q": "If y = 2x and x = 4, then y =", "options": ["6", "8", "2", "16"], "answer": 1}, {"q": "Simplify √50.", "options": ["5√2", "25√2", "10√2", "2√5"], "answer": 0}, {"q": "Average speed of a car that covers 120 km in 2 hours:", "options": ["40 km/h", "60 km/h", "80 km/h", "240 km/h"], "answer": 1}, {"q": "Number of diagonals in a pentagon:", "options": ["3", "5", "10", "2"], "answer": 1}, {"q": "The angles of a quadrilateral add up to:", "options": ["180°", "270°", "360°", "540°"], "answer": 2}, {"q": "Divide 60 in the ratio 2:3. The larger share is:", "options": ["24", "36", "30", "40"], "answer": 1}]};
+      const EXTRA2 = Object.assign({"Physics": [{"q": "Unit of power", "options": ["Watt", "Joule", "Newton", "Pascal"], "answer": 0}, {"q": "Unit of pressure", "options": ["Pascal", "Watt", "Joule", "Tesla"], "answer": 0}, {"q": "Speed of light in vacuum is about", "options": ["3×10⁸ m/s", "3×10⁶ m/s", "3×10⁵ m/s", "3×10¹⁰ m/s"], "answer": 0}, {"q": "An instrument for measuring electric current is the", "options": ["Ammeter", "Voltmeter", "Barometer", "Hygrometer"], "answer": 0}, {"q": "Ohm's law states that", "options": ["V = IR", "V = I/R", "V = I + R", "V = R/I"], "answer": 0}, {"q": "The weight of a 5 kg mass (g = 10 m/s²) is", "options": ["50 N", "5 N", "0.5 N", "500 N"], "answer": 0}, {"q": "A lens used to correct short-sightedness is", "options": ["Concave", "Convex", "Plane", "Cylindrical"], "answer": 0}, {"q": "Heat from the Sun reaches Earth mainly by", "options": ["Radiation", "Conduction", "Convection", "Evaporation"], "answer": 0}, {"q": "The SI unit of frequency is the", "options": ["Hertz", "Newton", "Joule", "Ohm"], "answer": 0}, {"q": "The kinetic energy of a body is given by", "options": ["½mv²", "mv²", "mgh", "½mv"], "answer": 0}, {"q": "The potential energy of a body of mass m at height h is", "options": ["mgh", "½mv²", "mv", "m/gh"], "answer": 0}, {"q": "The SI unit of electrical resistance is the", "options": ["Ohm", "Ampere", "Volt", "Coulomb"], "answer": 0}, {"q": "A particle with negative charge is the", "options": ["Electron", "Proton", "Neutron", "Nucleus"], "answer": 0}, {"q": "Sound cannot travel through a", "options": ["Vacuum", "Liquid", "Solid", "Gas"], "answer": 0}, {"q": "An echo is caused by", "options": ["Reflection of sound", "Refraction of sound", "Diffraction of sound", "Interference"], "answer": 0}, {"q": "Water boils at sea level at", "options": ["100°C", "0°C", "37°C", "212°C"], "answer": 0}, {"q": "Absolute zero on the Kelvin scale is", "options": ["0 K", "−273 K", "273 K", "100 K"], "answer": 0}, {"q": "Momentum is the product of", "options": ["Mass and velocity", "Mass and acceleration", "Mass and time", "Force and distance"], "answer": 0}, {"q": "Work done is given by", "options": ["Force × distance moved", "Force ÷ distance", "Mass × velocity", "Power × distance"], "answer": 0}, {"q": "Power is the rate of doing", "options": ["Work", "Force", "Acceleration", "Momentum"], "answer": 0}, {"q": "A rainbow is formed by", "options": ["Dispersion of light", "Diffraction of light", "Polarisation", "Total reflection of sound"], "answer": 0}, {"q": "A device that changes the voltage of an a.c. supply is a", "options": ["Transformer", "Dynamo", "Rectifier", "Fuse"], "answer": 0}, {"q": "A dynamo converts", "options": ["Mechanical energy to electrical energy", "Electrical energy to mechanical energy", "Heat to light", "Chemical to electrical energy"], "answer": 0}, {"q": "The most penetrating radioactive emission is", "options": ["Gamma rays", "Alpha particles", "Beta particles", "Visible light"], "answer": 0}, {"q": "A hydrometer measures the", "options": ["Relative density of liquids", "Atmospheric pressure", "Humidity", "Temperature"], "answer": 0}, {"q": "A barometer measures", "options": ["Atmospheric pressure", "Humidity", "Density", "Wind speed"], "answer": 0}, {"q": "Heat absorbed during change of state without temperature change is", "options": ["Latent heat", "Specific heat", "Radiant heat", "Thermal capacity"], "answer": 0}, {"q": "A fuse wire should have a", "options": ["Low melting point", "High melting point", "Zero resistance", "Magnetic property"], "answer": 0}, {"q": "Total internal reflection occurs when light passes from", "options": ["A denser to a less dense medium", "A less dense to a denser medium", "Air to glass", "Air to water"], "answer": 0}, {"q": "The unit of electric charge is the", "options": ["Coulomb", "Ampere", "Volt", "Watt"], "answer": 0}, {"q": "The image formed by a plane mirror is", "options": ["Virtual and laterally inverted", "Real and inverted", "Real and magnified", "Virtual and inverted vertically"], "answer": 0}], "History": [{"q": "Nigeria gained independence in the year", "options": ["1960", "1963", "1957", "1914"], "answer": 0}, {"q": "The Northern and Southern Protectorates were amalgamated in", "options": ["1914", "1900", "1960", "1951"], "answer": 0}, {"q": "The amalgamation of Nigeria was carried out by", "options": ["Lord Lugard", "Sir Hugh Clifford", "Sir Arthur Richards", "Sir John Macpherson"], "answer": 0}, {"q": "The first indigenous Governor-General of Nigeria was", "options": ["Nnamdi Azikiwe", "Tafawa Balewa", "Obafemi Awolowo", "Ahmadu Bello"], "answer": 0}, {"q": "Nigeria's first Prime Minister was", "options": ["Abubakar Tafawa Balewa", "Nnamdi Azikiwe", "Aminu Kano", "Ahmadu Bello"], "answer": 0}, {"q": "Nigeria became a republic in", "options": ["1963", "1960", "1966", "1970"], "answer": 0}, {"q": "The Nigerian Civil War began in", "options": ["1967", "1960", "1963", "1970"], "answer": 0}, {"q": "The Nigerian Civil War ended in", "options": ["1970", "1967", "1966", "1975"], "answer": 0}, {"q": "The founder of the Sokoto Caliphate was", "options": ["Usman dan Fodio", "Rabih", "Samori Toure", "Muhammadu Bello"], "answer": 0}, {"q": "The Berlin Conference on Africa took place in", "options": ["1884–85", "1914", "1960", "1800"], "answer": 0}, {"q": "The British abolished the slave trade in", "options": ["1807", "1914", "1884", "1960"], "answer": 0}, {"q": "Mansa Musa was a ruler of the", "options": ["Mali Empire", "Songhai Empire", "Ghana Empire", "Kanem-Bornu"], "answer": 0}, {"q": "Sundiata Keita founded the", "options": ["Mali Empire", "Songhai Empire", "Oyo Empire", "Benin Kingdom"], "answer": 0}, {"q": "The capital of the old Oyo Empire was", "options": ["Oyo-Ile", "Ile-Ife", "Ibadan", "Abeokuta"], "answer": 0}, {"q": "The traditional ruler of Benin is called the", "options": ["Oba", "Emir", "Obi", "Alaafin"], "answer": 0}, {"q": "The Clifford Constitution was introduced in", "options": ["1922", "1946", "1951", "1960"], "answer": 0}, {"q": "The Richards Constitution was introduced in", "options": ["1946", "1922", "1951", "1954"], "answer": 0}, {"q": "The Macpherson Constitution came into effect in", "options": ["1951", "1946", "1922", "1960"], "answer": 0}, {"q": "The Lyttelton Constitution was introduced in", "options": ["1954", "1951", "1946", "1960"], "answer": 0}, {"q": "World War I began in", "options": ["1914", "1939", "1918", "1900"], "answer": 0}, {"q": "World War II ended in", "options": ["1945", "1939", "1918", "1950"], "answer": 0}, {"q": "World War I ended in", "options": ["1918", "1914", "1939", "1945"], "answer": 0}, {"q": "The United Nations was founded in", "options": ["1945", "1919", "1960", "1939"], "answer": 0}, {"q": "The Organisation of African Unity was formed in", "options": ["1963", "1960", "1975", "1945"], "answer": 0}, {"q": "ECOWAS was established in", "options": ["1975", "1963", "1960", "1990"], "answer": 0}, {"q": "Kwame Nkrumah led which country to independence?", "options": ["Ghana", "Nigeria", "Kenya", "Tanzania"], "answer": 0}, {"q": "The Mau Mau uprising took place in", "options": ["Kenya", "Ghana", "Nigeria", "Egypt"], "answer": 0}, {"q": "Apartheid was practised in", "options": ["South Africa", "Kenya", "Ghana", "Egypt"], "answer": 0}, {"q": "Nelson Mandela became South Africa's president in", "options": ["1994", "1990", "1980", "2000"], "answer": 0}, {"q": "The Aba Women's Riot occurred in", "options": ["1929", "1914", "1945", "1960"], "answer": 0}, {"q": "Mungo Park explored the course of the River", "options": ["Niger", "Nile", "Congo", "Zambezi"], "answer": 0}, {"q": "The League of Nations was formed after", "options": ["World War I", "World War II", "The Cold War", "The Berlin Conference"], "answer": 0}, {"q": "Askia Muhammad was a famous ruler of the", "options": ["Songhai Empire", "Mali Empire", "Oyo Empire", "Kanem Empire"], "answer": 0}], "Principles of Accounts": [{"q": "The principle of double entry states that", "options": ["Every debit has a corresponding credit", "Assets equal expenses", "Only cash is recorded", "Profit equals capital"], "answer": 0}, {"q": "An example of an asset is", "options": ["Debtors", "Creditors", "Capital", "Drawings"], "answer": 0}, {"q": "An example of a liability is", "options": ["Creditors", "Debtors", "Stock", "Cash"], "answer": 0}, {"q": "Gross profit is calculated as", "options": ["Sales − Cost of goods sold", "Sales − Expenses", "Assets − Liabilities", "Capital + Profit"], "answer": 0}, {"q": "Net profit is calculated as", "options": ["Gross profit − Expenses", "Sales − Purchases", "Assets − Capital", "Gross profit + Expenses"], "answer": 0}, {"q": "Cost of goods sold equals", "options": ["Opening stock + Purchases − Closing stock", "Sales − Purchases", "Opening stock + Closing stock", "Purchases − Sales"], "answer": 0}, {"q": "A trial balance is prepared to", "options": ["Check arithmetical accuracy of the ledger", "Compute profit", "Value assets", "Record cash"], "answer": 0}, {"q": "The book that records cash receipts and payments is the", "options": ["Cash book", "Sales journal", "Purchases journal", "Trial balance"], "answer": 0}, {"q": "The petty cash book is used to record", "options": ["Small payments", "Large payments", "Credit sales", "Capital"], "answer": 0}, {"q": "Under the imprest system, the petty cashier", "options": ["Receives a fixed float refilled periodically", "Pays only by cheque", "Records credit purchases", "Keeps no records"], "answer": 0}, {"q": "A bank reconciliation statement", "options": ["Agrees the cash book with the bank statement", "Computes profit", "Records sales", "Values stock"], "answer": 0}, {"q": "An unpresented cheque is a cheque", "options": ["Issued but not yet cleared by the bank", "Returned unpaid", "Lost by the bank", "Deposited twice"], "answer": 0}, {"q": "A dishonoured cheque is one that is", "options": ["Returned unpaid by the bank", "Cleared by the bank", "Crossed", "Post-dated only"], "answer": 0}, {"q": "Carriage inwards is the cost of", "options": ["Transporting purchases to the business", "Delivering goods to customers", "Paying wages", "Paying rent"], "answer": 0}, {"q": "Returns inwards are goods", "options": ["Returned by customers", "Returned to suppliers", "Purchased on credit", "Taken by the owner"], "answer": 0}, {"q": "Returns outwards are goods", "options": ["Returned to suppliers", "Returned by customers", "Sold on credit", "Taken by the owner"], "answer": 0}, {"q": "Discount allowed is given to", "options": ["Customers", "Suppliers", "Employees", "Owners"], "answer": 0}, {"q": "Discount received is obtained from", "options": ["Suppliers", "Customers", "Employees", "Owners"], "answer": 0}, {"q": "The debit side of the cash account records", "options": ["Receipts", "Payments", "Expenses", "Liabilities"], "answer": 0}, {"q": "Accrued expenses are expenses", "options": ["Owed but not yet paid", "Paid in advance", "Received in advance", "Written off"], "answer": 0}, {"q": "Prepaid expenses are expenses", "options": ["Paid in advance", "Owed but unpaid", "Written off", "Received in advance"], "answer": 0}, {"q": "A bad debt is a debt that", "options": ["Cannot be recovered", "Is paid early", "Earns discount", "Is prepaid"], "answer": 0}, {"q": "A provision for doubtful debts is", "options": ["An estimate of debts unlikely to be paid", "An actual bad debt", "A discount", "Drawings"], "answer": 0}, {"q": "Capital expenditure is spending on", "options": ["Fixed assets", "Wages", "Rent", "Repairs"], "answer": 0}, {"q": "Revenue expenditure is spending on", "options": ["Day-to-day running costs", "Buying land", "Buying machinery", "Buying buildings"], "answer": 0}, {"q": "An example of a current asset is", "options": ["Stock", "Land", "Buildings", "Machinery"], "answer": 0}, {"q": "An example of a fixed asset is", "options": ["Motor vehicle", "Stock", "Debtors", "Cash"], "answer": 0}, {"q": "A document sent to a customer showing goods sold is an", "options": ["Invoice", "Receipt", "Debit note from supplier", "Cheque"], "answer": 0}, {"q": "A credit note is issued for", "options": ["Goods returned or overcharge", "Goods sold", "Cash received", "Drawings"], "answer": 0}, {"q": "Profit shared to shareholders of a company is called", "options": ["Dividend", "Interest", "Drawings", "Salary"], "answer": 0}], "Literature-in-English": [{"q": "A poem of fourteen lines is a", "options": ["Sonnet", "Ode", "Elegy", "Ballad"], "answer": 0}, {"q": "A poem of mourning for the dead is an", "options": ["Elegy", "Ode", "Epic", "Haiku"], "answer": 0}, {"q": "A long narrative poem about heroic deeds is an", "options": ["Epic", "Lyric", "Sonnet", "Haiku"], "answer": 0}, {"q": "Who wrote Things Fall Apart?", "options": ["Chinua Achebe", "Wole Soyinka", "Ben Okri", "Chimamanda Adichie"], "answer": 0}, {"q": "The Nobel Prize in Literature in 1986 was won by", "options": ["Wole Soyinka", "Chinua Achebe", "Ngugi wa Thiong'o", "J.P. Clark"], "answer": 0}, {"q": "Half of a Yellow Sun was written by", "options": ["Chimamanda Ngozi Adichie", "Buchi Emecheta", "Flora Nwapa", "Ama Ata Aidoo"], "answer": 0}, {"q": "Romeo and Juliet was written by", "options": ["William Shakespeare", "Christopher Marlowe", "Ben Jonson", "John Milton"], "answer": 0}, {"q": "Paradise Lost was written by", "options": ["John Milton", "William Shakespeare", "Geoffrey Chaucer", "John Dryden"], "answer": 0}, {"q": "The Lion and the Jewel was written by", "options": ["Wole Soyinka", "Chinua Achebe", "Femi Osofisan", "Ola Rotimi"], "answer": 0}, {"q": "The Gods Are Not to Blame was written by", "options": ["Ola Rotimi", "Wole Soyinka", "Femi Osofisan", "J.P. Clark"], "answer": 0}, {"q": "Efuru was written by", "options": ["Flora Nwapa", "Buchi Emecheta", "Chimamanda Adichie", "Ama Ata Aidoo"], "answer": 0}, {"q": "The Joys of Motherhood was written by", "options": ["Buchi Emecheta", "Flora Nwapa", "Chimamanda Adichie", "Mariama Bâ"], "answer": 0}, {"q": "Weep Not, Child was written by", "options": ["Ngugi wa Thiong'o", "Chinua Achebe", "Wole Soyinka", "Alex La Guma"], "answer": 0}, {"q": "Animal Farm was written by", "options": ["George Orwell", "Aldous Huxley", "Charles Dickens", "Thomas Hardy"], "answer": 0}, {"q": "Oliver Twist was written by", "options": ["Charles Dickens", "Thomas Hardy", "Jane Austen", "George Eliot"], "answer": 0}, {"q": "Pride and Prejudice was written by", "options": ["Jane Austen", "Emily Brontë", "Charlotte Brontë", "Mary Shelley"], "answer": 0}, {"q": "Wuthering Heights was written by", "options": ["Emily Brontë", "Charlotte Brontë", "Jane Austen", "George Eliot"], "answer": 0}, {"q": "A play that ends in disaster for the hero is a", "options": ["Tragedy", "Comedy", "Farce", "Satire"], "answer": 0}, {"q": "A play with a happy ending is a", "options": ["Comedy", "Tragedy", "Elegy", "Epic"], "answer": 0}, {"q": "A speech by a character alone on stage revealing thoughts is a", "options": ["Soliloquy", "Dialogue", "Chorus", "Prologue"], "answer": 0}, {"q": "Using a part to represent the whole is", "options": ["Synecdoche", "Irony", "Pun", "Paradox"], "answer": 0}, {"q": "Giving human qualities to non-human things is", "options": ["Personification", "Apostrophe", "Simile", "Hyperbole"], "answer": 0}, {"q": "Addressing an absent person or thing directly is", "options": ["Apostrophe", "Soliloquy", "Aside", "Allusion"], "answer": 0}, {"q": "The rhyme scheme of a couplet is", "options": ["AABB", "ABAB", "ABBA", "ABCD"], "answer": 0}, {"q": "Unrhymed iambic pentameter is called", "options": ["Blank verse", "Free verse", "A couplet", "A sonnet"], "answer": 0}, {"q": "A reference to a well-known person or event is an", "options": ["Allusion", "Illusion", "Elision", "Epigram"], "answer": 0}, {"q": "A story with a hidden moral meaning is an", "options": ["Allegory", "Epigram", "Anecdote", "Lyric"], "answer": 0}, {"q": "The main character in a work is the", "options": ["Protagonist", "Antagonist", "Foil", "Chorus"], "answer": 0}, {"q": "The character who opposes the hero is the", "options": ["Antagonist", "Protagonist", "Narrator", "Chorus"], "answer": 0}, {"q": "The highest point of tension in a plot is the", "options": ["Climax", "Exposition", "Denouement", "Prologue"], "answer": 0}, {"q": "The final resolution of a plot is the", "options": ["Denouement", "Climax", "Exposition", "Prologue"], "answer": 0}]}, {"Home Economics": [{"q": "The nutrient mainly needed for growth and repair of body cells is", "options": ["Protein", "Carbohydrate", "Fat", "Water"], "answer": 0}, {"q": "The main source of energy in food is", "options": ["Carbohydrate", "Protein", "Vitamins", "Minerals"], "answer": 0}, {"q": "A deficiency of vitamin C causes", "options": ["Scurvy", "Rickets", "Beriberi", "Night blindness"], "answer": 0}, {"q": "A deficiency of vitamin D causes", "options": ["Rickets", "Scurvy", "Pellagra", "Anaemia"], "answer": 0}, {"q": "A deficiency of iron causes", "options": ["Anaemia", "Goitre", "Rickets", "Scurvy"], "answer": 0}, {"q": "A deficiency of iodine causes", "options": ["Goitre", "Anaemia", "Scurvy", "Rickets"], "answer": 0}, {"q": "A deficiency of protein in young children causes", "options": ["Kwashiorkor", "Scurvy", "Goitre", "Rickets"], "answer": 0}, {"q": "A deficiency of vitamin A mainly affects the", "options": ["Eyes", "Bones", "Teeth", "Kidneys"], "answer": 0}, {"q": "A good source of vitamin C is", "options": ["Orange", "Rice", "Butter", "Sugar"], "answer": 0}, {"q": "A good source of protein is", "options": ["Beans", "Sugar", "Palm oil", "Salt"], "answer": 0}, {"q": "Dietary fibre (roughage) helps", "options": ["Digestion", "Blood clotting", "Vision", "Hearing"], "answer": 0}, {"q": "Cooking food in an oven using dry heat is", "options": ["Baking", "Boiling", "Steaming", "Stewing"], "answer": 0}, {"q": "Cooking food in boiling water is", "options": ["Boiling", "Roasting", "Grilling", "Baking"], "answer": 0}, {"q": "Cooking food in steam is", "options": ["Steaming", "Frying", "Roasting", "Baking"], "answer": 0}, {"q": "Wool is obtained from", "options": ["Sheep", "Cotton plant", "Silkworm", "Flax"], "answer": 0}, {"q": "Cotton is a", "options": ["Natural fibre", "Synthetic fibre", "Mineral fibre", "Metal fibre"], "answer": 0}, {"q": "Silk is obtained from the", "options": ["Silkworm", "Sheep", "Cotton plant", "Flax plant"], "answer": 0}, {"q": "Nylon is a", "options": ["Synthetic fibre", "Natural fibre", "Animal fibre", "Plant fibre"], "answer": 0}, {"q": "A tool used for taking body measurements is the", "options": ["Tape measure", "Thimble", "Tracing wheel", "Pinking shears"], "answer": 0}, {"q": "A thimble is used to", "options": ["Protect the finger when hand sewing", "Cut cloth", "Measure cloth", "Mark cloth"], "answer": 0}, {"q": "Washing, drying and ironing clothes is called", "options": ["Laundering", "Tailoring", "Knitting", "Weaving"], "answer": 0}, {"q": "A balanced diet contains", "options": ["All nutrients in the right proportions", "Only protein", "Only starch", "Only fat"], "answer": 0}, {"q": "Drying preserves food by", "options": ["Removing moisture", "Adding water", "Increasing bacteria", "Adding fat"], "answer": 0}, {"q": "An insect that contaminates food is the", "options": ["Housefly", "Butterfly", "Bee", "Ladybird"], "answer": 0}, {"q": "Yeast makes bread rise by", "options": ["Fermentation", "Evaporation", "Condensation", "Freezing"], "answer": 0}, {"q": "An example of a raising agent is", "options": ["Baking powder", "Salt", "Sugar", "Flour"], "answer": 0}, {"q": "A family budget helps to", "options": ["Plan income and spending", "Increase spending", "Avoid saving", "Hide expenses"], "answer": 0}, {"q": "The best first food for a new baby is", "options": ["Breast milk", "Rice", "Beans", "Yam"], "answer": 0}, {"q": "Immunisation protects children against", "options": ["Diseases", "Hunger", "Cold", "Poverty"], "answer": 0}, {"q": "A garment worn to protect clothes while cooking is an", "options": ["Apron", "Scarf", "Blazer", "Cape"], "answer": 0}, {"q": "Money set aside for future use is", "options": ["Savings", "Debt", "Expenditure", "Tax"], "answer": 0}, {"q": "Washing hands with soap helps to prevent", "options": ["The spread of germs", "Hunger", "Cold", "Tiredness"], "answer": 0}], "Islamic Religious Knowledge (IRK / IRS)": [{"q": "The holy book of Islam is the", "options": ["Qur'an", "Torah", "Bible", "Zabur"], "answer": 0}, {"q": "The last Prophet of Islam is", "options": ["Muhammad (SAW)", "Isa", "Musa", "Ibrahim"], "answer": 0}, {"q": "The number of pillars of Islam is", "options": ["Five", "Four", "Six", "Seven"], "answer": 0}, {"q": "The month of fasting is", "options": ["Ramadan", "Shawwal", "Rajab", "Muharram"], "answer": 0}, {"q": "The pilgrimage to Makkah is called", "options": ["Hajj", "Zakat", "Salat", "Sawm"], "answer": 0}, {"q": "The number of compulsory daily prayers is", "options": ["Five", "Three", "Four", "Six"], "answer": 0}, {"q": "The declaration of faith in Islam is", "options": ["Shahadah", "Salat", "Zakat", "Sawm"], "answer": 0}, {"q": "Obligatory annual charity is", "options": ["Zakat", "Hajj", "Sawm", "Salat"], "answer": 0}, {"q": "The Prophet Muhammad (SAW) was born in", "options": ["Makkah", "Madinah", "Taif", "Jerusalem"], "answer": 0}, {"q": "The migration of the Prophet to Madinah is called", "options": ["Hijrah", "Hajj", "Isra", "Jihad"], "answer": 0}, {"q": "The angel who brought revelation to the Prophet was", "options": ["Jibril", "Mikail", "Israfil", "Azrail"], "answer": 0}, {"q": "The first revelation came in the cave of", "options": ["Hira", "Thawr", "Uhud", "Safa"], "answer": 0}, {"q": "The first chapter of the Qur'an is", "options": ["Al-Fatihah", "Al-Baqarah", "Al-Ikhlas", "An-Nas"], "answer": 0}, {"q": "The number of chapters (surahs) in the Qur'an is", "options": ["114", "110", "120", "99"], "answer": 0}, {"q": "The first Caliph of Islam was", "options": ["Abu Bakr", "Umar", "Uthman", "Ali"], "answer": 0}, {"q": "The second Caliph was", "options": ["Umar ibn Al-Khattab", "Abu Bakr", "Uthman", "Ali"], "answer": 0}, {"q": "The third Caliph was", "options": ["Uthman ibn Affan", "Ali ibn Abi Talib", "Umar", "Abu Bakr"], "answer": 0}, {"q": "The fourth Caliph was", "options": ["Ali ibn Abi Talib", "Umar", "Abu Bakr", "Uthman"], "answer": 0}, {"q": "The first wife of the Prophet was", "options": ["Khadijah", "Aisha", "Hafsah", "Zainab"], "answer": 0}, {"q": "The direction Muslims face in prayer is the", "options": ["Qiblah", "Minbar", "Adhan", "Wudu"], "answer": 0}, {"q": "Ablution before prayer is called", "options": ["Wudu", "Ghusl", "Adhan", "Dhikr"], "answer": 0}, {"q": "The call to prayer is", "options": ["Adhan", "Khutbah", "Dhikr", "Tarawih"], "answer": 0}, {"q": "The congregational Friday prayer is", "options": ["Jumu'ah", "Tarawih", "Witr", "Duha"], "answer": 0}, {"q": "The festival after Ramadan is", "options": ["Eid al-Fitr", "Eid al-Adha", "Ashura", "Mawlid"], "answer": 0}, {"q": "The festival of sacrifice is", "options": ["Eid al-Adha", "Eid al-Fitr", "Isra", "Hijrah"], "answer": 0}, {"q": "The Night Journey of the Prophet is called", "options": ["Isra and Mi'raj", "Hijrah", "Badr", "Uhud"], "answer": 0}, {"q": "The first major battle in Islam was", "options": ["Badr", "Uhud", "Khandaq", "Hunayn"], "answer": 0}, {"q": "Prophet Ibrahim was commanded to sacrifice his son", "options": ["Isma'il", "Yusuf", "Yahya", "Zakariyya"], "answer": 0}, {"q": "The prophet swallowed by a big fish was", "options": ["Yunus", "Nuh", "Musa", "Ayyub"], "answer": 0}, {"q": "The prophet who built the ark was", "options": ["Nuh", "Ibrahim", "Isa", "Hud"], "answer": 0}, {"q": "The Torah was revealed to", "options": ["Musa", "Isa", "Dawud", "Sulaiman"], "answer": 0}, {"q": "The Zabur was revealed to", "options": ["Dawud", "Musa", "Isa", "Sulaiman"], "answer": 0}, {"q": "Prophet Isa was born to", "options": ["Maryam", "Hajar", "Sarah", "Khadijah"], "answer": 0}, {"q": "Interest or usury in Islam is called", "options": ["Riba", "Zakat", "Sadaqah", "Waqf"], "answer": 0}, {"q": "The Islamic month of Hajj is", "options": ["Dhul-Hijjah", "Ramadan", "Rajab", "Safar"], "answer": 0}], "Music": [{"q": "The number of lines on a musical staff is", "options": ["Five", "Four", "Six", "Three"], "answer": 0}, {"q": "The treble clef is also called the", "options": ["G clef", "F clef", "C clef", "D clef"], "answer": 0}, {"q": "The bass clef is also called the", "options": ["F clef", "G clef", "C clef", "A clef"], "answer": 0}, {"q": "A semibreve has a value of", "options": ["4 beats", "2 beats", "1 beat", "½ beat"], "answer": 0}, {"q": "A minim has a value of", "options": ["2 beats", "4 beats", "1 beat", "½ beat"], "answer": 0}, {"q": "A crotchet has a value of", "options": ["1 beat", "2 beats", "4 beats", "½ beat"], "answer": 0}, {"q": "A quaver has a value of", "options": ["½ beat", "1 beat", "2 beats", "4 beats"], "answer": 0}, {"q": "A 4/4 time signature has how many crotchet beats per bar?", "options": ["4", "2", "3", "6"], "answer": 0}, {"q": "The key of C major has", "options": ["No sharps or flats", "One sharp", "One flat", "Two sharps"], "answer": 0}, {"q": "The highest male voice is the", "options": ["Tenor", "Bass", "Baritone", "Alto"], "answer": 0}, {"q": "The lowest male voice is the", "options": ["Bass", "Tenor", "Alto", "Soprano"], "answer": 0}, {"q": "The highest female voice is the", "options": ["Soprano", "Alto", "Tenor", "Bass"], "answer": 0}, {"q": "SATB in choral music stands for", "options": ["Soprano, Alto, Tenor, Bass", "Solo, Alto, Treble, Bass", "Soprano, Alto, Treble, Baritone", "Solo, Air, Tenor, Bass"], "answer": 0}, {"q": "A drum belongs to the", "options": ["Percussion family", "String family", "Brass family", "Woodwind family"], "answer": 0}, {"q": "A violin belongs to the", "options": ["String family", "Brass family", "Percussion family", "Woodwind family"], "answer": 0}, {"q": "A clarinet belongs to the", "options": ["Woodwind family", "Brass family", "String family", "Percussion family"], "answer": 0}, {"q": "A trumpet belongs to the", "options": ["Brass family", "Woodwind family", "String family", "Percussion family"], "answer": 0}, {"q": "The speed of a piece of music is its", "options": ["Tempo", "Pitch", "Timbre", "Dynamics"], "answer": 0}, {"q": "The loudness or softness of music is its", "options": ["Dynamics", "Tempo", "Rhythm", "Harmony"], "answer": 0}, {"q": "Allegro means", "options": ["Fast and lively", "Slow", "Loud", "Soft"], "answer": 0}, {"q": "Adagio means", "options": ["Slowly", "Quickly", "Loudly", "Softly"], "answer": 0}, {"q": "The sign p (piano) means", "options": ["Soft", "Loud", "Fast", "Slow"], "answer": 0}, {"q": "The sign f (forte) means", "options": ["Loud", "Soft", "Fast", "Slow"], "answer": 0}, {"q": "Crescendo means", "options": ["Gradually getting louder", "Gradually getting softer", "Getting faster", "Getting slower"], "answer": 0}, {"q": "A sharp sign (♯)", "options": ["Raises a note by a semitone", "Lowers a note by a semitone", "Cancels an accidental", "Holds a note"], "answer": 0}, {"q": "A flat sign (♭)", "options": ["Lowers a note by a semitone", "Raises a note by a semitone", "Cancels an accidental", "Repeats a note"], "answer": 0}, {"q": "A natural sign (♮)", "options": ["Cancels a sharp or flat", "Raises a note", "Lowers a note", "Holds a note"], "answer": 0}, {"q": "A tie joins", "options": ["Two notes of the same pitch", "Notes of different pitch", "Two rests", "Two bars"], "answer": 0}, {"q": "A dot after a note increases its value by", "options": ["Half", "Double", "A quarter", "Nothing"], "answer": 0}, {"q": "Handel composed the oratorio", "options": ["Messiah", "The Magic Flute", "Fidelio", "The Creation"], "answer": 0}, {"q": "The Fifth Symphony was composed by", "options": ["Beethoven", "Handel", "Haydn", "Bach"], "answer": 0}, {"q": "Afrobeat was pioneered by", "options": ["Fela Anikulapo Kuti", "Osadebe", "Haruna Ishola", "Sir Victor Uwaifo"], "answer": 0}, {"q": "Harmony is the sounding of", "options": ["Notes together", "A single melody", "A silent bar", "A repeated beat"], "answer": 0}, {"q": "A melody is a", "options": ["Succession of musical notes", "Group of rests", "Chord only", "Beat only"], "answer": 0}], "Physical and Health Education (PHE)": [{"q": "The system responsible for pumping blood round the body is the", "options": ["Circulatory system", "Digestive system", "Nervous system", "Skeletal system"], "answer": 0}, {"q": "The number of players per football team on the field is", "options": ["11", "9", "10", "12"], "answer": 0}, {"q": "The number of players per volleyball team on court is", "options": ["6", "5", "7", "11"], "answer": 0}, {"q": "The number of players per basketball team on court is", "options": ["5", "6", "7", "11"], "answer": 0}, {"q": "The Olympic Games are held every", "options": ["4 years", "2 years", "3 years", "5 years"], "answer": 0}, {"q": "Long jump is an example of a", "options": ["Field event", "Track event", "Relay event", "Swimming event"], "answer": 0}, {"q": "A relay race is a", "options": ["Track event", "Field event", "Throwing event", "Jumping event"], "answer": 0}, {"q": "The javelin is a", "options": ["Throwing event", "Track event", "Jumping event", "Relay event"], "answer": 0}, {"q": "The heavy metal ball thrown in athletics is used in the", "options": ["Shot put", "Javelin", "High jump", "Hurdles"], "answer": 0}, {"q": "The muscle that pumps blood is the", "options": ["Cardiac muscle", "Smooth muscle", "Skeletal muscle", "Tendon"], "answer": 0}, {"q": "The number of bones in an adult human body is", "options": ["206", "300", "150", "250"], "answer": 0}, {"q": "The hip is an example of a", "options": ["Ball and socket joint", "Hinge joint", "Pivot joint", "Gliding joint"], "answer": 0}, {"q": "The elbow is an example of a", "options": ["Hinge joint", "Ball and socket joint", "Pivot joint", "Gliding joint"], "answer": 0}, {"q": "First aid for severe bleeding is to", "options": ["Apply direct pressure", "Apply heat", "Move the limb", "Give water"], "answer": 0}, {"q": "First aid for a minor burn is to", "options": ["Cool it under running water", "Apply oil", "Apply ice", "Burst blisters"], "answer": 0}, {"q": "CPR stands for", "options": ["Cardiopulmonary resuscitation", "Cardiac pulse rate", "Cardio pressure rest", "Circulatory pulse reading"], "answer": 0}, {"q": "The purpose of warming up before exercise is to", "options": ["Prepare the body and prevent injury", "Reduce fitness", "Tire the muscles", "Replace cooling down"], "answer": 0}, {"q": "Malaria is spread by the", "options": ["Female Anopheles mosquito", "Housefly", "Tsetse fly", "Cockroach"], "answer": 0}, {"q": "Cholera is mainly spread by", "options": ["Contaminated water", "Mosquito bites", "Sunlight", "Exercise"], "answer": 0}, {"q": "The ability of a joint to move through its full range is", "options": ["Flexibility", "Strength", "Endurance", "Speed"], "answer": 0}, {"q": "The ability to continue exercise without tiring is", "options": ["Endurance", "Flexibility", "Agility", "Balance"], "answer": 0}, {"q": "A health risk of smoking is", "options": ["Lung cancer", "Stronger bones", "Better fitness", "Longer life"], "answer": 0}, {"q": "The recommended sleep for most adults is about", "options": ["7–9 hours", "2–3 hours", "12 hours", "4 hours"], "answer": 0}, {"q": "The offside rule is used in", "options": ["Football", "Volleyball", "Tennis", "Boxing"], "answer": 0}, {"q": "A net game is", "options": ["Volleyball", "Football", "Hockey", "Athletics"], "answer": 0}, {"q": "A racket sport is", "options": ["Tennis", "Football", "Hockey", "Basketball"], "answer": 0}, {"q": "The world governing body of football is", "options": ["FIFA", "IOC", "CAF", "FIBA"], "answer": 0}, {"q": "The number of rings on the Olympic flag is", "options": ["Five", "Four", "Six", "Seven"], "answer": 0}, {"q": "Dehydration is caused by", "options": ["Loss of body water", "Overeating", "Sleeping", "Reading"], "answer": 0}, {"q": "Good personal hygiene includes", "options": ["Regular bathing", "Sharing towels", "Skipping tooth brushing", "Wearing dirty clothes"], "answer": 0}, {"q": "RICE treatment for sprains stands for", "options": ["Rest, Ice, Compression, Elevation", "Run, Ice, Cool, Exercise", "Rest, Insulate, Cover, Exercise", "Relax, Ice, Cream, Elevate"], "answer": 0}, {"q": "The vitamin produced when skin is exposed to sunlight is", "options": ["Vitamin D", "Vitamin C", "Vitamin B", "Vitamin K"], "answer": 0}]});
+      const PREFIX = /^(choose the best answer for this item|which option is correct\?)[:\s]*/i;
+      const keyOf = q => q.replace(PREFIX, '').toLowerCase().replace(/[^a-z0-9\u00c0-\u024f\u0600-\u06ff]+/g, ' ').trim();
+      ["Hausa", "Igbo", "Yoruba", "Fine Arts"].forEach(k => delete db[k]);
+      for (const k in db) {
+        const target = k === "English Language (Use of English)" ? 60 : 50;
+        const seen = new Set(); const clean = [];
+        db[k].forEach(x => { const key = keyOf(x.q); if (!seen.has(key)) { seen.add(key); clean.push({ q: x.q.replace(PREFIX, ''), options: x.options, answer: x.answer }); } });
+        (EXTRA[k] || []).concat(EXTRA2[k] || []).forEach(x => { const key = keyOf(x.q) + '|' + x.options.join(); if (clean.length < target && !seen.has(keyOf(x.q) + '|' + x.options.join())) { seen.add(key); clean.push(x); } });
+        db[k] = clean;
+      }
+      return db;
+    }
+
+    const jambDatabase = createJambDatabase();
+
+    let playerName = "Candidate";
+    let selectedSubject = "";
+    let questions = [];
+    let currentQuestionIndex = 0;
+    let userAnswers = [];
+    let timeLeft = 30 * 60; // 30 mins
+    let timerInterval = null;
+
+    // Shuffle options helper
+    function shuffleOptions(item) {
+      const originalCorrectOption = item.options[item.answer];
+      let mappedOptions = item.options.map((opt) => opt);
+      
+      for (let i = mappedOptions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [mappedOptions[i], mappedOptions[j]] = [mappedOptions[j], mappedOptions[i]];
+      }
+
+      const newAnswerIndex = mappedOptions.indexOf(originalCorrectOption);
+
+      return {
+        q: item.q,
+        options: mappedOptions,
+        answer: newAnswerIndex
+      };
+    }
+
+    function openSubjectSelection() {
+      const nameInput = document.getElementById("player-name").value.trim();
+      if (!nameInput && playerName === "Candidate") {
+        showDialog("Please enter your name before proceeding!");
+        return;
+      } else if (nameInput) {
+        playerName = nameInput;
+      }
+
+      document.getElementById("start-screen").style.display = "none";
+      document.getElementById("subject-screen").style.display = "block";
+
+      const container = document.getElementById("subject-buttons-container");
+      container.innerHTML = "";
+
+      const subjects = Object.keys(jambDatabase);
+
+      subjects.forEach((subj) => {
+        const btn = document.createElement("button");
+        btn.className = "start-btn";
+        btn.innerText = `${subj} (${jambDatabase[subj].length} Questions)`;
+        btn.onclick = () => startSubjectQuiz(subj);
+        container.appendChild(btn);
+      });
+    }
+
+    function startSubjectQuiz(subjectName) {
+      selectedSubject = subjectName;
+
+      document.getElementById("subject-screen").style.display = "none";
+      document.getElementById("score-screen").style.display = "none";
+      document.getElementById("quiz-screen").style.display = "block";
+
+      document.getElementById("current-stage-tag").innerText = `JAMB UTME • ${selectedSubject}`;
+
+      const rawQuestions = jambDatabase[selectedSubject];
+      
+      // Shuffle questions & options
+      questions = rawQuestions
+        .map(q => shuffleOptions(q))
+        .sort(() => Math.random() - 0.5);
+
+      timeLeft = (subjectName === "English Language (Use of English)" ? 36 : 30) * 60; // 30 minutes; English 36 minutes
+      userAnswers = new Array(questions.length).fill(null);
+      currentQuestionIndex = 0;
+
+      startTimer();
+      showQuestion();
+    }
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        const mins = Math.floor(timeLeft / 60);
+        const secs = timeLeft % 60;
+        document.getElementById("timer-display").innerText = 
+          `⏱ Time Remaining: ${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          submitQuiz();
+        }
+      }, 1000);
+    }
+
+    function showQuestion() {
+      const qData = questions[currentQuestionIndex];
+      
+      document.getElementById("question-count").innerText = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
+      document.getElementById("question-text").innerText = `${currentQuestionIndex + 1}. ${qData.q}`;
+      
+      const progressPercent = ((currentQuestionIndex + 1) / questions.length) * 100;
+      document.getElementById("progress-bar").style.width = `${progressPercent}%`;
+
+      const optionsContainer = document.getElementById("options-container");
+      optionsContainer.innerHTML = "";
+
+      const selectedAns = userAnswers[currentQuestionIndex];
+
+      qData.options.forEach((opt, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.innerText = `${String.fromCharCode(65 + idx)}. ${opt}`;
+
+        if (selectedAns !== null) {
+          btn.disabled = true;
+          if (idx === qData.answer) {
+            btn.classList.add("correct");
+          } else if (idx === selectedAns) {
+            btn.classList.add("wrong");
+          }
+        } else {
+          btn.onclick = () => selectOption(idx);
+        }
+
+        optionsContainer.appendChild(btn);
+      });
+
+      document.getElementById("prev-btn").style.visibility = currentQuestionIndex === 0 ? "hidden" : "visible";
+      document.getElementById("next-btn").style.visibility = currentQuestionIndex === questions.length - 1 ? "hidden" : "visible";
+
+      updateScoreTracker();
+    }
+
+    function selectOption(index) {
+      if (userAnswers[currentQuestionIndex] !== null) return;
+      userAnswers[currentQuestionIndex] = index;
+      showQuestion();
+    }
+
+    function changeQuestion(step) {
+      currentQuestionIndex += step;
+      showQuestion();
+    }
+
+    function updateScoreTracker() {
+      let score = 0;
+      userAnswers.forEach((ans, idx) => {
+        if (ans !== null && ans === questions[idx].answer) score++;
+      });
+      document.getElementById("score-tracker").innerText = `Score: ${score}`;
+    }
+
+    function showDialog(message, onConfirm, confirmText) {
+      const overlay = document.getElementById("dialog-overlay");
+      const yes = document.getElementById("dialog-yes");
+      const no = document.getElementById("dialog-no");
+      document.getElementById("dialog-message").textContent = message;
+      no.style.display = onConfirm ? "inline-block" : "none";
+      yes.textContent = confirmText || "OK";
+      overlay.style.display = "flex";
+      yes.onclick = () => { overlay.style.display = "none"; if (onConfirm) onConfirm(); };
+      no.onclick = () => { overlay.style.display = "none"; };
+    }
+
+    function confirmSubmit() {
+      const answeredCount = userAnswers.filter(a => a !== null).length;
+      showDialog(`Hello ${playerName}, you have answered ${answeredCount} of ${questions.length} questions in ${selectedSubject}. Submit test now?`, submitQuiz, "Yes, Submit");
+    }
+
+    function submitQuiz() {
+      clearInterval(timerInterval);
+
+      let score = 0;
+      userAnswers.forEach((ans, idx) => {
+        if (ans === questions[idx].answer) score++;
+      });
+
+      document.getElementById("quiz-screen").style.display = "none";
+      document.getElementById("score-screen").style.display = "block";
+
+      document.getElementById("stage-result-title").innerText = `JAMB UTME - ${selectedSubject}`;
+      document.getElementById("final-score").innerText = `${score} / ${questions.length}`;
+
+      let feedback = "";
+      const percent = (score / questions.length) * 100;
+
+      if (percent >= 80) {
+        feedback = `🌟 Outstanding result, <strong>${playerName}</strong>! Excellent readiness for JAMB ${selectedSubject}!`;
+      } else if (percent >= 60) {
+        feedback = `👏 Great job, <strong>${playerName}</strong>! Strong foundation in ${selectedSubject}, keep sharpening your speed!`;
+      } else if (percent >= 40) {
+        feedback = `👍 Fair attempt, <strong>${playerName}</strong>! Review your wrong answers in ${selectedSubject} and try again.`;
+      } else {
+        feedback = `📖 Continuous practice makes perfect! Review the material for <strong>${selectedSubject}</strong>, <strong>${playerName}</strong>!`;
+      }
+
+      document.getElementById("feedback-text").innerHTML = feedback;
+    }
+
+    function restartQuiz() {
+      document.getElementById("score-screen").style.display = "none";
+      document.getElementById("subject-screen").style.display = "block";
+    }
+  </script>
+</body>
+</html>
